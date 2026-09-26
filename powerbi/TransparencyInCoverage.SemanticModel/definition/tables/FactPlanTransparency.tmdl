@@ -1,0 +1,245 @@
+table FactPlanTransparency
+	lineageTag: e60a5a71-b0c3-4892-9424-c64d6f70bf96
+
+	column ReportingPeriodKey
+		dataType: int64
+		formatString: 0
+		lineageTag: c3452845-a90d-45a9-942f-a5a33270efec
+		summarizeBy: none
+		sourceColumn: ReportingPeriodKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 134007cf-07b1-476b-b78f-14ed17450c81
+		summarizeBy: none
+		sourceColumn: StateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column IssuerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 193f8d12-bb5f-4b2e-b4d9-29c6899b36f4
+		summarizeBy: count
+		sourceColumn: IssuerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PlanKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 52f76724-abdb-465d-9bc3-b11a4e0bb5f3
+		summarizeBy: count
+		sourceColumn: PlanKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimsReceivedOutOfNetwork
+		dataType: int64
+		formatString: 0
+		lineageTag: 494b8a7b-0bff-4a1e-a9cd-bee4145f5c84
+		summarizeBy: sum
+		sourceColumn: ClaimsReceivedOutOfNetwork
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimsReceivedInNetwork
+		dataType: int64
+		formatString: 0
+		lineageTag: 2d8c282c-7ac0-49e8-b410-fe4f3dd036d0
+		summarizeBy: sum
+		sourceColumn: ClaimsReceivedInNetwork
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimsDeniedOutOfNetwork
+		dataType: int64
+		formatString: 0
+		lineageTag: ab43c506-2e37-48a2-9473-7031089dea53
+		summarizeBy: sum
+		sourceColumn: ClaimsDeniedOutOfNetwork
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimsDeniedInNetwork
+		dataType: int64
+		formatString: 0
+		lineageTag: e024883d-7cb3-46ff-abc4-7af74a175c2e
+		summarizeBy: sum
+		sourceColumn: ClaimsDeniedInNetwork
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimsResubmittedOutOfNetwork
+		dataType: int64
+		formatString: 0
+		lineageTag: ae9e0341-33f4-4c87-b398-757f23803d86
+		summarizeBy: sum
+		sourceColumn: ClaimsResubmittedOutOfNetwork
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimsResubmittedInNetwork
+		dataType: int64
+		formatString: 0
+		lineageTag: 3190ae8f-6724-4407-80af-38481029f9b4
+		summarizeBy: sum
+		sourceColumn: ClaimsResubmittedInNetwork
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeniedReferralOrPriorAuthorization
+		dataType: int64
+		formatString: 0
+		lineageTag: 6df4d756-bc7a-406f-99e4-cffd92187b4e
+		summarizeBy: sum
+		sourceColumn: DeniedReferralOrPriorAuthorization
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeniedDueToOutOfNetworkProvider
+		dataType: int64
+		formatString: 0
+		lineageTag: 3dda0ffb-2bdb-4484-bd14-bbe92d18360e
+		summarizeBy: sum
+		sourceColumn: DeniedDueToOutOfNetworkProvider
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeniedServicesExcluded
+		dataType: int64
+		formatString: 0
+		lineageTag: 5a082748-f11a-4af0-905f-2ce5279ce3ec
+		summarizeBy: sum
+		sourceColumn: DeniedServicesExcluded
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeniedNotMedicallyNecessaryExclBH
+		dataType: int64
+		formatString: 0
+		lineageTag: 1e40968c-a09e-4e38-b158-5729150f8473
+		summarizeBy: sum
+		sourceColumn: DeniedNotMedicallyNecessaryExclBH
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeniedNotMedicallyNecessaryBHOnly
+		dataType: int64
+		formatString: 0
+		lineageTag: 724f314f-2851-4af6-b1f0-31baf6740890
+		summarizeBy: sum
+		sourceColumn: DeniedNotMedicallyNecessaryBHOnly
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeniedBenefitLimitReached
+		dataType: int64
+		formatString: 0
+		lineageTag: 437543af-89de-4afa-afba-0a898d24d92f
+		summarizeBy: sum
+		sourceColumn: DeniedBenefitLimitReached
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeniedMemberNotCovered
+		dataType: int64
+		formatString: 0
+		lineageTag: 203e55dc-e1e3-4633-a9b3-70a26f2ff2a4
+		summarizeBy: sum
+		sourceColumn: DeniedMemberNotCovered
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeniedInvestigationalExperimentalCosmetic
+		dataType: int64
+		formatString: 0
+		lineageTag: 3234017e-55ee-4cb3-8724-1bbc1934b7cc
+		summarizeBy: sum
+		sourceColumn: DeniedInvestigationalExperimentalCosmetic
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeniedAdministrativeReason
+		dataType: int64
+		formatString: 0
+		lineageTag: a32dc500-1f49-42b5-8f4b-f9faa753f2f4
+		summarizeBy: sum
+		sourceColumn: DeniedAdministrativeReason
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeniedOther
+		dataType: int64
+		formatString: 0
+		lineageTag: d52879fa-ce96-40e2-b06e-2a04cd2375ca
+		summarizeBy: sum
+		sourceColumn: DeniedOther
+
+		annotation SummarizationSetBy = Automatic
+
+	column AverageMonthlyEnrollment
+		dataType: double
+		lineageTag: 5938a787-0365-4b68-9cdf-ca2bee94cf9d
+		summarizeBy: sum
+		sourceColumn: AverageMonthlyEnrollment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column AverageMonthlyDisenrollment
+		dataType: double
+		lineageTag: 65b8ab7c-174c-4fc1-bcb5-6bb72778eb03
+		summarizeBy: sum
+		sourceColumn: AverageMonthlyDisenrollment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition FactPlanTransparency = m
+		mode: import
+		source =
+				let
+				    Source =
+				        fxLoadCanonicalCsv(
+				            "fact_plan_transparency.csv",
+				            {
+				                {"ReportingPeriodKey", Int64.Type},
+				                {"StateKey", Int64.Type},
+				                {"IssuerKey", Int64.Type},
+				                {"PlanKey", Int64.Type},
+				
+				                {"ClaimsReceivedOutOfNetwork", Int64.Type},
+				                {"ClaimsReceivedInNetwork", Int64.Type},
+				                {"ClaimsDeniedOutOfNetwork", Int64.Type},
+				                {"ClaimsDeniedInNetwork", Int64.Type},
+				                {"ClaimsResubmittedOutOfNetwork", Int64.Type},
+				                {"ClaimsResubmittedInNetwork", Int64.Type},
+				
+				                {"DeniedReferralOrPriorAuthorization", Int64.Type},
+				                {"DeniedDueToOutOfNetworkProvider", Int64.Type},
+				                {"DeniedServicesExcluded", Int64.Type},
+				                {"DeniedNotMedicallyNecessaryExclBH", Int64.Type},
+				                {"DeniedNotMedicallyNecessaryBHOnly", Int64.Type},
+				                {"DeniedBenefitLimitReached", Int64.Type},
+				                {"DeniedMemberNotCovered", Int64.Type},
+				                {"DeniedInvestigationalExperimentalCosmetic", Int64.Type},
+				                {"DeniedAdministrativeReason", Int64.Type},
+				                {"DeniedOther", Int64.Type},
+				
+				                {"AverageMonthlyEnrollment", type number},
+				                {"AverageMonthlyDisenrollment", type number}
+				            }
+				        )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

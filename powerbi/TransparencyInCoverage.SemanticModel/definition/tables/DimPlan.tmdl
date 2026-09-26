@@ -1,0 +1,132 @@
+table DimPlan
+	lineageTag: 601650e7-a34c-4d82-b3f6-86115938e9df
+
+	column PlanKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 1b806790-d477-4e90-bec5-ef2fe8909e3b
+		summarizeBy: none
+		sourceColumn: PlanKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PlanID
+		dataType: string
+		lineageTag: 1b17d98b-eda7-4dfe-b74b-782a5273384c
+		summarizeBy: none
+		sourceColumn: PlanID
+
+		annotation SummarizationSetBy = Automatic
+
+	column IssuerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: b1ffbb93-f285-4b93-b176-2c6914c1da1e
+		summarizeBy: count
+		sourceColumn: IssuerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: a3c52f45-8cf8-48d2-ba99-5a242378a58e
+		summarizeBy: none
+		sourceColumn: StateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column MarketSegment
+		dataType: string
+		lineageTag: 28124499-0134-4db7-bdc3-97ed7c881d48
+		summarizeBy: none
+		sourceColumn: MarketSegment
+
+		annotation SummarizationSetBy = Automatic
+
+	column PlanType
+		dataType: string
+		lineageTag: b3c12dd5-b8ce-43d8-9426-5c1fd8c7175c
+		summarizeBy: none
+		sourceColumn: PlanType
+
+		annotation SummarizationSetBy = Automatic
+
+	column PlanOfferingType
+		dataType: string
+		lineageTag: 8639c8b1-f281-4f80-bf54-2b6c1cf1dc8c
+		summarizeBy: none
+		sourceColumn: PlanOfferingType
+
+		annotation SummarizationSetBy = Automatic
+
+	column MetalLevel
+		dataType: string
+		lineageTag: 1cdb51f9-a0d9-43cb-8482-3f125e27f5df
+		summarizeBy: none
+		sourceColumn: MetalLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSheet
+		dataType: string
+		lineageTag: 9fe36fad-62d0-451f-ab15-8559033a4d89
+		summarizeBy: none
+		sourceColumn: SourceSheet
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceExcelRow
+		dataType: int64
+		formatString: 0
+		lineageTag: 6c21d2bc-359d-4220-8c0e-e0584c6ed3cd
+		summarizeBy: sum
+		sourceColumn: SourceExcelRow
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceFileName
+		dataType: string
+		lineageTag: bdbfa4c2-1283-46b6-9f1b-39f88b03de8f
+		summarizeBy: none
+		sourceColumn: SourceFileName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceFileSHA256
+		dataType: string
+		lineageTag: f1603051-ba22-41f6-8156-ec34458cb4e9
+		summarizeBy: none
+		sourceColumn: SourceFileSHA256
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimPlan = m
+		mode: import
+		source =
+				let
+				    Source =
+				        fxLoadCanonicalCsv(
+				            "dim_plan.csv",
+				            {
+				                {"PlanKey", Int64.Type},
+				                {"PlanID", type text},
+				                {"IssuerKey", Int64.Type},
+				                {"StateKey", Int64.Type},
+				                {"MarketSegment", type text},
+				                {"PlanType", type text},
+				                {"PlanOfferingType", type text},
+				                {"MetalLevel", type text},
+				                {"SourceSheet", type text},
+				                {"SourceExcelRow", Int64.Type},
+				                {"SourceFileName", type text},
+				                {"SourceFileSHA256", type text}
+				            }
+				        )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

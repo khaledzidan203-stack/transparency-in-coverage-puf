@@ -1,0 +1,69 @@
+table FactPlanMetricAvailability
+	lineageTag: 93cb4236-ed92-4785-b287-201a4c3aed04
+
+	column ReportingPeriodKey
+		dataType: int64
+		formatString: 0
+		lineageTag: db2aa8b6-decc-4380-90fd-8118da04fc71
+		summarizeBy: none
+		sourceColumn: ReportingPeriodKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PlanKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 68679caa-fe56-46f4-a58c-942829fd7ac3
+		summarizeBy: none
+		sourceColumn: PlanKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column MetricKey
+		dataType: int64
+		formatString: 0
+		lineageTag: d8eb73df-18f3-4044-b32d-93ab43f6c020
+		summarizeBy: count
+		sourceColumn: MetricKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column AvailabilityStatusKey
+		dataType: int64
+		formatString: 0
+		lineageTag: ccc52816-07d8-4373-8b1d-c8b6aefee823
+		summarizeBy: count
+		sourceColumn: AvailabilityStatusKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceStatusToken
+		dataType: string
+		lineageTag: b8d01927-db3c-487b-a18a-ad91a6777b1a
+		summarizeBy: none
+		sourceColumn: SourceStatusToken
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactPlanMetricAvailability = m
+		mode: import
+		source =
+				let
+				    Source =
+				        fxLoadCanonicalCsv(
+				            "fact_plan_metric_availability.csv",
+				            {
+				                {"ReportingPeriodKey", Int64.Type},
+				                {"PlanKey", Int64.Type},
+				                {"MetricKey", Int64.Type},
+				                {"AvailabilityStatusKey", Int64.Type},
+				                {"SourceStatusToken", type text}
+				            }
+				        )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

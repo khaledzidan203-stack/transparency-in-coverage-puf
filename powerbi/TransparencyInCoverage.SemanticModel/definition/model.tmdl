@@ -1,0 +1,30 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["DevMode"]
+
+annotation PBI_QueryOrder = ["DataFolderPath","fxLoadCanonicalCsv","DimState","DimReportingPeriod","DimIssuer","DimPlan","DimMetric","DimAvailabilityStatus","FactIssuerTransparency","FactPlanTransparency","FactIssuerMetricAvailability","FactPlanMetricAvailability","DQExceptionRegister","_Measures"]
+
+ref table DimState
+ref table DimReportingPeriod
+ref table DimIssuer
+ref table DimPlan
+ref table DimMetric
+ref table DimAvailabilityStatus
+ref table FactIssuerTransparency
+ref table FactPlanTransparency
+ref table FactIssuerMetricAvailability
+ref table FactPlanMetricAvailability
+ref table DQExceptionRegister
+ref table _Measures
+
+ref cultureInfo en-US
+

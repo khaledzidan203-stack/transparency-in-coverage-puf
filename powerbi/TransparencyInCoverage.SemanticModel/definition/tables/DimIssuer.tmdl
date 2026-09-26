@@ -1,0 +1,114 @@
+table DimIssuer
+	lineageTag: d2c16632-9ed1-4eb1-905e-9b9625bb9436
+
+	column IssuerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 8f76083f-dd50-4be0-8be5-9ec7990e7a65
+		summarizeBy: count
+		sourceColumn: IssuerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column IssuerID
+		dataType: string
+		lineageTag: 428ab319-59c8-4dfe-96b3-8eddbd2bfb97
+		summarizeBy: none
+		sourceColumn: IssuerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column IssuerName
+		dataType: string
+		lineageTag: b7cabb60-e264-4d39-a726-23d78dfb76a0
+		summarizeBy: none
+		sourceColumn: IssuerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 6a1c58d5-31e0-4d59-9740-caf9241caf66
+		summarizeBy: none
+		sourceColumn: StateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsIssuerNewToExchange
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 487a0033-4553-4efe-b32b-e2184ae55816
+		summarizeBy: none
+		sourceColumn: IsIssuerNewToExchange
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsSADPOnlyIssuer
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: bb41b39b-be7d-4376-b05c-e0b190bd0139
+		summarizeBy: none
+		sourceColumn: IsSADPOnlyIssuer
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimsPaymentPoliciesURL
+		dataType: string
+		lineageTag: bcce47de-c1ae-49c8-a7b9-56bec98804cd
+		summarizeBy: none
+		sourceColumn: ClaimsPaymentPoliciesURL
+
+		annotation SummarizationSetBy = Automatic
+
+	column RateReviewURL
+		dataType: string
+		lineageTag: 1006ca09-0b6c-45ff-b733-57bda24346cc
+		summarizeBy: none
+		sourceColumn: RateReviewURL
+
+		annotation SummarizationSetBy = Automatic
+
+	column FinancialInformationURL
+		dataType: string
+		lineageTag: 6b3ca6a1-249a-4c8a-ba99-dbcca6e1bcf9
+		summarizeBy: none
+		sourceColumn: FinancialInformationURL
+
+		annotation SummarizationSetBy = Automatic
+
+	column FinancialInformationStatusCode
+		dataType: string
+		lineageTag: 1dec6d94-a988-46e6-b116-6137e7abc63a
+		summarizeBy: none
+		sourceColumn: FinancialInformationStatusCode
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimIssuer = m
+		mode: import
+		source =
+				let
+				    Source =
+				        fxLoadCanonicalCsv(
+				            "dim_issuer.csv",
+				            {
+				                {"IssuerKey", Int64.Type},
+				                {"IssuerID", type text},
+				                {"IssuerName", type text},
+				                {"StateKey", Int64.Type},
+				                {"IsIssuerNewToExchange", type logical},
+				                {"IsSADPOnlyIssuer", type logical},
+				                {"ClaimsPaymentPoliciesURL", type text},
+				                {"RateReviewURL", type text},
+				                {"FinancialInformationURL", type text},
+				                {"FinancialInformationStatusCode", type text}
+				            }
+				        )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,31 @@
+﻿MetricKey,MetricCode,MetricDisplayName,EntityLevel,MetricFamily,NetworkScope,IsPercentage,IsAdditive,SourceColumnName,ExperienceYear
+1,ISSUER_CLAIMS_RECEIVED_OON,Issuer Claims Received - Out of Network,ISSUER,CLAIMS,OUT_OF_NETWORK,False,True,Issuer_Claims_Received_Out_of_Network,2024
+2,ISSUER_CLAIMS_RECEIVED_IN,Issuer Claims Received - In Network,ISSUER,CLAIMS,IN_NETWORK,False,True,Issuer_Claims_Received_In_Network,2024
+3,ISSUER_CLAIMS_DENIED_OON,Issuer Claims Denied - Out of Network,ISSUER,DENIALS,OUT_OF_NETWORK,False,True,Issuer_Claims_Denied_Out_of_Network,2024
+4,ISSUER_CLAIMS_DENIED_IN,Issuer Claims Denied - In Network,ISSUER,DENIALS,IN_NETWORK,False,True,Issuer_Claims_Denied_In_Network,2024
+5,ISSUER_CLAIMS_RESUBMITTED_OON,Issuer Claims Resubmitted - Out of Network,ISSUER,RESUBMISSIONS,OUT_OF_NETWORK,False,True,Issuer_Claims_Resubmitted_Out_of_Network,2024
+6,ISSUER_CLAIMS_RESUBMITTED_IN,Issuer Claims Resubmitted - In Network,ISSUER,RESUBMISSIONS,IN_NETWORK,False,True,Issuer_Claims_Resubmitted_In_Network,2024
+7,ISSUER_INTERNAL_APPEALS_FILED,Issuer Internal Appeals Filed,ISSUER,APPEALS,ALL,False,True,Issuer_Internal_Appeals_Filed,2024
+8,ISSUER_INTERNAL_APPEALS_OVERTURNED,Issuer Internal Appeals Overturned,ISSUER,APPEALS,ALL,False,True,Issuer_Number_Internal_Appeals_Overturned,2024
+9,ISSUER_INTERNAL_APPEALS_OVERTURN_PCT,Issuer Internal Appeals Overturn % - Published,ISSUER,APPEALS,ALL,True,False,Issuer_Percent_Internal_Appeals_Overturned,2024
+10,ISSUER_EXTERNAL_APPEALS_FILED,Issuer External Appeals Filed,ISSUER,APPEALS,ALL,False,True,Issuer_External_Appeals_Filed,2024
+11,ISSUER_EXTERNAL_APPEALS_OVERTURNED,Issuer External Appeals Overturned,ISSUER,APPEALS,ALL,False,True,Issuer_Number_External_Appeals_Overturned,2024
+12,ISSUER_EXTERNAL_APPEALS_OVERTURN_PCT,Issuer External Appeals Overturn % - Published,ISSUER,APPEALS,ALL,True,False,Issuer_Percent_External_Appeals_Overturned,2024
+13,PLAN_CLAIMS_RECEIVED_OON,Plan Claims Received - Out of Network,PLAN,CLAIMS,OUT_OF_NETWORK,False,True,Plan_Number_Claims_Received_Out_of_Network,2024
+14,PLAN_CLAIMS_RECEIVED_IN,Plan Claims Received - In Network,PLAN,CLAIMS,IN_NETWORK,False,True,Plan_Number_Claims_Received_In_Network,2024
+15,PLAN_CLAIMS_DENIED_OON,Plan Claims Denied - Out of Network,PLAN,DENIALS,OUT_OF_NETWORK,False,True,Plan_Number_Claims_Denied_Out_of_Network,2024
+16,PLAN_CLAIMS_DENIED_IN,Plan Claims Denied - In Network,PLAN,DENIALS,IN_NETWORK,False,True,Plan_Number_Claims_Denied_In_Network,2024
+17,PLAN_CLAIMS_RESUBMITTED_OON,Plan Claims Resubmitted - Out of Network,PLAN,RESUBMISSIONS,OUT_OF_NETWORK,False,True,Plan_Number_Claims_Resubmitted_Out_of_Network,2024
+18,PLAN_CLAIMS_RESUBMITTED_IN,Plan Claims Resubmitted - In Network,PLAN,RESUBMISSIONS,IN_NETWORK,False,True,Plan_Number_Claims_Resubmitted_In_Network,2024
+19,PLAN_DENIED_REFERRAL_REQUIRED,Plan Claims Denied - Referral/Prior Authorization Required,PLAN,DENIAL_REASONS,ALL,False,True,Plan_Number_Claims_Denied_Referral_Required,2024
+20,PLAN_DENIED_DUE_TO_OON,Plan Claims Denied - Out of Network Provider,PLAN,DENIAL_REASONS,ALL,False,True,Plan_Number_Claims_Denied_Due_To_Out_Of_Network,2024
+21,PLAN_DENIED_SERVICES_EXCLUDED,Plan Claims Denied - Services Excluded,PLAN,DENIAL_REASONS,ALL,False,True,Plan_Number_Claims_Denied_Services_Excluded,2024
+22,PLAN_DENIED_NOT_MED_NEC_EXCL_BH,Plan Claims Denied - Not Medically Necessary Excluding Behavioral Health,PLAN,DENIAL_REASONS,ALL,False,True,Plan_Number_Claims_Denied_Not_Medically_Necessary_Excluding_Behavioral_Health,2024
+23,PLAN_DENIED_NOT_MED_NEC_BH_ONLY,Plan Claims Denied - Not Medically Necessary Behavioral Health Only,PLAN,DENIAL_REASONS,ALL,False,True,Plan_Number_Claims_Denied_Not_Medically_Necessary_Behavioral_Health_Only,2024
+24,PLAN_DENIED_BENEFIT_LIMIT,Plan Claims Denied - Benefit Limit Reached,PLAN,DENIAL_REASONS,ALL,False,True,Plan_Number_Claims_Denied_Due_To_Enrolle_Benefit_Limit_Reached,2024
+25,PLAN_DENIED_MEMBER_NOT_COVERED,Plan Claims Denied - Member Not Covered,PLAN,DENIAL_REASONS,ALL,False,True,Plan_Number_Claims_Denied_Due_To_Member_Not_Covered,2024
+26,PLAN_DENIED_INVESTIGATIONAL,Plan Claims Denied - Investigational/Experimental/Cosmetic,PLAN,DENIAL_REASONS,ALL,False,True,Plan_Number_Claims_Denied_Due_To_Investigational_Experimental_Cosmetic_Proceduce,2024
+27,PLAN_DENIED_ADMINISTRATIVE,Plan Claims Denied - Administrative Reason,PLAN,DENIAL_REASONS,ALL,False,True,Plan_Number_Claims_Denied_Due_To_Administrative_Reason,2024
+28,PLAN_DENIED_OTHER,Plan Claims Denied - Other,PLAN,DENIAL_REASONS,ALL,False,True,Plan_Number_Claims_Denied_Other,2024
+29,PLAN_AVG_MONTHLY_ENROLLMENT,Average Monthly Enrollment,PLAN,ENROLLMENT,NOT_APPLICABLE,False,False,Average Monthly Enrollment,2024
+30,PLAN_AVG_MONTHLY_DISENROLLMENT,Average Monthly Disenrollment,PLAN,ENROLLMENT,NOT_APPLICABLE,False,False,Average Monthly Disenrollment,2024

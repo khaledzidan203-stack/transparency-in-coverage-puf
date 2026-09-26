@@ -1,0 +1,56 @@
+relationship 19bfb950-9af8-5ec4-91ae-5a9ffc1f897f
+	fromColumn: DimIssuer.StateKey
+	toColumn: DimState.StateKey
+
+relationship 5d7b9f05-9a1d-53fa-a1ed-1f04aab682fc
+	fromColumn: DimPlan.IssuerKey
+	toColumn: DimIssuer.IssuerKey
+
+relationship 99623389-6480-5373-bae3-a751d4ec1f83
+	fromColumn: FactIssuerTransparency.IssuerKey
+	toColumn: DimIssuer.IssuerKey
+
+relationship 66c1fa2f-64a3-5de0-b6ee-363788f4784b
+	fromColumn: FactIssuerMetricAvailability.IssuerKey
+	toColumn: DimIssuer.IssuerKey
+
+relationship 399843bf-0aab-5343-b4c3-fadd2d03784e
+	fromColumn: FactPlanTransparency.PlanKey
+	toColumn: DimPlan.PlanKey
+
+relationship 6710a2fa-bd99-5f1c-b295-d9d99ba6b824
+	fromColumn: FactPlanMetricAvailability.PlanKey
+	toColumn: DimPlan.PlanKey
+
+relationship 4b863e16-a425-5f6d-93b0-8533801564f3
+	fromColumn: FactIssuerTransparency.ReportingPeriodKey
+	toColumn: DimReportingPeriod.ReportingPeriodKey
+
+relationship a66cc5b0-4c56-523b-9d98-34eafa7dc87f
+	fromColumn: FactPlanTransparency.ReportingPeriodKey
+	toColumn: DimReportingPeriod.ReportingPeriodKey
+
+relationship 639612b2-efab-52e9-a761-9014a553914d
+	fromColumn: FactIssuerMetricAvailability.ReportingPeriodKey
+	toColumn: DimReportingPeriod.ReportingPeriodKey
+
+relationship d1048210-0be7-5f6d-846d-435d72c16c82
+	fromColumn: FactPlanMetricAvailability.ReportingPeriodKey
+	toColumn: DimReportingPeriod.ReportingPeriodKey
+
+relationship 004766f8-da17-552d-a9ee-c56b328be24c
+	fromColumn: FactIssuerMetricAvailability.MetricKey
+	toColumn: DimMetric.MetricKey
+
+relationship fd0a0ec6-3ffc-54b4-9bdb-5382ed033141
+	fromColumn: FactPlanMetricAvailability.MetricKey
+	toColumn: DimMetric.MetricKey
+
+relationship c59d4ae0-4134-51b6-a25e-c2c0c57723dd
+	fromColumn: FactIssuerMetricAvailability.AvailabilityStatusKey
+	toColumn: DimAvailabilityStatus.StatusKey
+
+relationship 41c756c4-cd0a-5fe4-a5b9-255afc199c21
+	fromColumn: FactPlanMetricAvailability.AvailabilityStatusKey
+	toColumn: DimAvailabilityStatus.StatusKey
+

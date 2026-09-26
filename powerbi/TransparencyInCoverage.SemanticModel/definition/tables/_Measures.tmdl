@@ -1,0 +1,1210 @@
+table _Measures
+	lineageTag: 056fb304-3b15-5df8-9e65-5c29d8e7e9ee
+
+	measure 'Issuer Count' = DISTINCTCOUNT(DimIssuer[IssuerID])
+		formatString: #,##0
+		displayFolder: 01 Population
+		lineageTag: c5a97db0-5c69-56e8-a031-6d23bf465121
+
+	measure 'Plan Count' = DISTINCTCOUNT(DimPlan[PlanID])
+		formatString: #,##0
+		displayFolder: 01 Population
+		lineageTag: cc485450-f4ba-5542-b02a-a7d87f54aa94
+
+	measure 'Issuer Claims Received - In Network' =
+			VAR Eligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 2,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			RETURN
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsReceivedInNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+		formatString: #,##0
+		displayFolder: 02 Claims
+		lineageTag: 67bb0d9f-a989-54c4-addf-a6f1cdab70e5
+
+	measure 'Issuer Claims Received - Out of Network' =
+			VAR Eligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 1,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			RETURN
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsReceivedOutOfNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+		formatString: #,##0
+		displayFolder: 02 Claims
+		lineageTag: 6d141495-3925-5f65-8608-ec88d7cb7ef4
+
+	measure 'Issuer Comparable Claims Received - Total' =
+			VAR RIn =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 2,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR ROut =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 1,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR DIn =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 4,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR DOut =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 3,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible =
+			    INTERSECT(INTERSECT(RIn, ROut), INTERSECT(DIn, DOut))
+			RETURN
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsReceivedInNetwork])
+			            + SUM(FactIssuerTransparency[ClaimsReceivedOutOfNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+		formatString: #,##0
+		displayFolder: 02 Claims
+		lineageTag: ef64e5b0-26d5-5849-ac44-9e3494faa24a
+
+	measure 'Issuer Claims Denied - In Network' =
+			VAR Eligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 4,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			RETURN
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsDeniedInNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+		formatString: #,##0
+		displayFolder: 03 Denials
+		lineageTag: 18817c14-941f-5545-8dbf-3d22bc54d773
+
+	measure 'Issuer Claims Denied - Out of Network' =
+			VAR Eligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 3,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			RETURN
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsDeniedOutOfNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+		formatString: #,##0
+		displayFolder: 03 Denials
+		lineageTag: dbfc541f-3fe1-59d7-8b08-97feb7b18cb6
+
+	measure 'Issuer Comparable Claims Denied - Total' =
+			VAR RIn =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 2,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR ROut =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 1,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR DIn =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 4,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR DOut =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 3,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible =
+			    INTERSECT(INTERSECT(RIn, ROut), INTERSECT(DIn, DOut))
+			RETURN
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsDeniedInNetwork])
+			            + SUM(FactIssuerTransparency[ClaimsDeniedOutOfNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+		formatString: #,##0
+		displayFolder: 03 Denials
+		lineageTag: e21074df-44ee-57b0-a272-33b51dd53dcb
+
+	measure 'Issuer In-Network Denial Rate' =
+			VAR DeniedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 4,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR ReceivedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 2,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible = INTERSECT(DeniedEligible, ReceivedEligible)
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsDeniedInNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsReceivedInNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator)
+		formatString: 0.00%
+		displayFolder: 03 Denials
+		lineageTag: 6d77f40e-71c2-5c89-9330-5748d1abf9a4
+
+	measure 'Issuer Out-of-Network Denial Rate' =
+			VAR DeniedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 3,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR ReceivedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 1,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible = INTERSECT(DeniedEligible, ReceivedEligible)
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsDeniedOutOfNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsReceivedOutOfNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator)
+		formatString: 0.00%
+		displayFolder: 03 Denials
+		lineageTag: 72e05f67-cfd0-5b1f-897d-a1a73fac15d4
+
+	measure 'Issuer Comparable Overall Denial Rate' =
+			VAR RIn =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 2,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR ROut =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 1,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR DIn =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 4,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR DOut =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 3,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible =
+			    INTERSECT(INTERSECT(RIn, ROut), INTERSECT(DIn, DOut))
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsDeniedInNetwork])
+			            + SUM(FactIssuerTransparency[ClaimsDeniedOutOfNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsReceivedInNetwork])
+			            + SUM(FactIssuerTransparency[ClaimsReceivedOutOfNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator)
+		formatString: 0.00%
+		displayFolder: 03 Denials
+		lineageTag: 316fcd80-0602-5d6e-b6c8-c59fcf94f735
+
+	measure 'Issuer Network Denial Rate Gap' = [Issuer Out-of-Network Denial Rate] - [Issuer In-Network Denial Rate]
+		formatString: 0.00%
+		displayFolder: 04 Network Comparison
+		lineageTag: e86565c4-ac57-59ce-9c9f-56e70db5de48
+
+	measure 'Issuer Resubmission Events per 100 Denied - In Network' =
+			VAR ResubEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 6,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR DeniedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 4,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible = INTERSECT(ResubEligible, DeniedEligible)
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsResubmittedInNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsDeniedInNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator) * 100
+		formatString: 0.00
+		displayFolder: 05 Resubmissions
+		lineageTag: d5de7eeb-f952-5ca1-a0ee-164836c040c3
+
+	measure 'Issuer Resubmission Events per 100 Denied - Out of Network' =
+			VAR ResubEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 5,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR DeniedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 3,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible = INTERSECT(ResubEligible, DeniedEligible)
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsResubmittedOutOfNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsDeniedOutOfNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator) * 100
+		formatString: 0.00
+		displayFolder: 05 Resubmissions
+		lineageTag: 36139fc7-6f5e-5843-a6e9-982d8ae9f18d
+
+	measure 'Issuer Comparable Total Resubmission Events' =
+			VAR InEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 6,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR OutEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 5,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible = INTERSECT(InEligible, OutEligible)
+			RETURN
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ClaimsResubmittedInNetwork])
+			            + SUM(FactIssuerTransparency[ClaimsResubmittedOutOfNetwork]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+		formatString: #,##0
+		displayFolder: 05 Resubmissions
+		lineageTag: c596d2cc-7668-5d60-92c7-65c579e4779e
+
+	measure 'Internal Appeals Filed' =
+			VAR Eligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 7,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			RETURN
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[InternalAppealsFiled]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+		formatString: #,##0
+		displayFolder: 06 Appeals
+		lineageTag: ff2b0068-d49f-5974-ab9e-05dbbdcef105
+
+	measure 'Internal Appeals Overturned' =
+			VAR Eligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 8,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			RETURN
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[InternalAppealsOverturned]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+		formatString: #,##0
+		displayFolder: 06 Appeals
+		lineageTag: 875511bc-23b0-5413-91ce-bd4234cc66ba
+
+	measure 'Internal Appeal Overturn Rate' =
+			VAR FiledEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 7,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR OverturnedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 8,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible = INTERSECT(FiledEligible, OverturnedEligible)
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[InternalAppealsOverturned]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[InternalAppealsFiled]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator)
+		formatString: 0.00%
+		displayFolder: 06 Appeals
+		lineageTag: 1955233b-f5d8-5df1-97e5-6a395e0a2e10
+
+	measure 'External Appeals Filed' =
+			VAR Eligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 10,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			RETURN
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ExternalAppealsFiled]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+		formatString: #,##0
+		displayFolder: 06 Appeals
+		lineageTag: 943c4a46-b7dc-5861-9c9f-4ad9ad8e1e1a
+
+	measure 'External Appeals Overturned' =
+			VAR Eligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 11,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			RETURN
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ExternalAppealsOverturned]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+		formatString: #,##0
+		displayFolder: 06 Appeals
+		lineageTag: 5c37ef8b-dab4-5a06-88e7-f7e93f045de6
+
+	measure 'External Appeal Overturn Rate' =
+			VAR FiledEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 10,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR OverturnedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 11,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible = INTERSECT(FiledEligible, OverturnedEligible)
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ExternalAppealsOverturned]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[ExternalAppealsFiled]),
+			        TREATAS(Eligible, FactIssuerTransparency[IssuerKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator)
+		formatString: 0.00%
+		displayFolder: 06 Appeals
+		lineageTag: 51e7ee5f-850f-5e55-ab1d-71d798fc2e2d
+
+	measure 'Denial Reason Count' =
+			VAR MetricKey = SELECTEDVALUE(DimMetric[MetricKey])
+			VAR EligiblePlans =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        MetricKey = 19,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedReferralOrPriorAuthorization]),
+			                TREATAS(EligiblePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 20,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedDueToOutOfNetworkProvider]),
+			                TREATAS(EligiblePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 21,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedServicesExcluded]),
+			                TREATAS(EligiblePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 22,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedNotMedicallyNecessaryExclBH]),
+			                TREATAS(EligiblePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 23,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedNotMedicallyNecessaryBHOnly]),
+			                TREATAS(EligiblePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 24,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedBenefitLimitReached]),
+			                TREATAS(EligiblePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 25,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedMemberNotCovered]),
+			                TREATAS(EligiblePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 26,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedInvestigationalExperimentalCosmetic]),
+			                TREATAS(EligiblePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 27,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedAdministrativeReason]),
+			                TREATAS(EligiblePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 28,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedOther]),
+			                TREATAS(EligiblePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        BLANK()
+			    )
+		formatString: #,##0
+		displayFolder: 07 Denial Reasons
+		lineageTag: d9fd85b6-ceac-5388-931d-8eaf53f016ee
+
+	measure 'Comparable Denial Reason Composition %' =
+			VAR MetricKey = SELECTEDVALUE(DimMetric[MetricKey])
+			VAR FullyComparablePlans =
+			    SELECTCOLUMNS(
+			        FILTER(
+			            CALCULATETABLE(
+			                SUMMARIZE(
+			                    FactPlanMetricAvailability,
+			                    FactPlanMetricAvailability[PlanKey],
+			                    "__AvailableReasonMetrics",
+			                        DISTINCTCOUNT(FactPlanMetricAvailability[MetricKey])
+			                ),
+			                REMOVEFILTERS(DimMetric),
+			                REMOVEFILTERS(DimAvailabilityStatus),
+			                FactPlanMetricAvailability[MetricKey] >= 19,
+			                FactPlanMetricAvailability[MetricKey] <= 28,
+			                FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			            ),
+			            [__AvailableReasonMetrics] = 10
+			        ),
+			        "PlanKey", FactPlanMetricAvailability[PlanKey]
+			    )
+			VAR SelectedReason =
+			    SWITCH(
+			        TRUE(),
+			        MetricKey = 19,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedReferralOrPriorAuthorization]),
+			                TREATAS(FullyComparablePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 20,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedDueToOutOfNetworkProvider]),
+			                TREATAS(FullyComparablePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 21,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedServicesExcluded]),
+			                TREATAS(FullyComparablePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 22,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedNotMedicallyNecessaryExclBH]),
+			                TREATAS(FullyComparablePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 23,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedNotMedicallyNecessaryBHOnly]),
+			                TREATAS(FullyComparablePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 24,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedBenefitLimitReached]),
+			                TREATAS(FullyComparablePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 25,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedMemberNotCovered]),
+			                TREATAS(FullyComparablePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 26,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedInvestigationalExperimentalCosmetic]),
+			                TREATAS(FullyComparablePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 27,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedAdministrativeReason]),
+			                TREATAS(FullyComparablePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        MetricKey = 28,
+			            CALCULATE(
+			                SUM(FactPlanTransparency[DeniedOther]),
+			                TREATAS(FullyComparablePlans, FactPlanTransparency[PlanKey])
+			            ),
+			        BLANK()
+			    )
+			VAR AllReasons =
+			    CALCULATE(
+			        SUM(FactPlanTransparency[DeniedReferralOrPriorAuthorization])
+			            + SUM(FactPlanTransparency[DeniedDueToOutOfNetworkProvider])
+			            + SUM(FactPlanTransparency[DeniedServicesExcluded])
+			            + SUM(FactPlanTransparency[DeniedNotMedicallyNecessaryExclBH])
+			            + SUM(FactPlanTransparency[DeniedNotMedicallyNecessaryBHOnly])
+			            + SUM(FactPlanTransparency[DeniedBenefitLimitReached])
+			            + SUM(FactPlanTransparency[DeniedMemberNotCovered])
+			            + SUM(FactPlanTransparency[DeniedInvestigationalExperimentalCosmetic])
+			            + SUM(FactPlanTransparency[DeniedAdministrativeReason])
+			            + SUM(FactPlanTransparency[DeniedOther]),
+			        TREATAS(FullyComparablePlans, FactPlanTransparency[PlanKey])
+			    )
+			RETURN
+			    IF(
+			        MetricKey >= 19 && MetricKey <= 28,
+			        DIVIDE(SelectedReason, AllReasons),
+			        BLANK()
+			    )
+		formatString: 0.00%
+		displayFolder: 07 Denial Reasons
+		lineageTag: 00675fe1-d28d-5429-982d-784134ee8cd4
+
+	measure 'Reported Average Monthly Enrollment' =
+			VAR Eligible =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 29,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			RETURN
+			    CALCULATE(
+			        SUM(FactPlanTransparency[AverageMonthlyEnrollment]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+		formatString: #,##0.00
+		displayFolder: 08 Enrollment
+		lineageTag: d34f8b5c-9a85-544a-acc2-cb905b80cf75
+
+	measure 'Reported Average Monthly Disenrollment' =
+			VAR Eligible =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 30,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			RETURN
+			    CALCULATE(
+			        SUM(FactPlanTransparency[AverageMonthlyDisenrollment]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+		formatString: #,##0.00
+		displayFolder: 08 Enrollment
+		lineageTag: dd0ebcd7-1c3d-54a5-82a3-8f18bb5e1e87
+
+	measure 'Comparable Disenrollment-to-Enrollment Ratio' =
+			VAR EnrollmentEligible =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 29,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR DisenrollmentEligible =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 30,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible = INTERSECT(EnrollmentEligible, DisenrollmentEligible)
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactPlanTransparency[AverageMonthlyDisenrollment]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactPlanTransparency[AverageMonthlyEnrollment]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator)
+		formatString: 0.00%
+		displayFolder: 08 Enrollment
+		lineageTag: 47ed81c6-c145-545e-8eac-5862e36587e3
+
+	measure 'Available Entity Count' =
+			VAR EntityLevel = SELECTEDVALUE(DimMetric[EntityLevel])
+			RETURN
+			    SWITCH(
+			        EntityLevel,
+			        "ISSUER",
+			            CALCULATE(
+			                COUNTROWS(FactIssuerMetricAvailability),
+			                REMOVEFILTERS(DimAvailabilityStatus),
+			                FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			            ),
+			        "PLAN",
+			            CALCULATE(
+			                COUNTROWS(FactPlanMetricAvailability),
+			                REMOVEFILTERS(DimAvailabilityStatus),
+			                FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			            ),
+			        BLANK()
+			    )
+		formatString: #,##0
+		displayFolder: 09 Availability
+		lineageTag: 1346614a-b543-5aa9-8830-3172db2a1bc4
+
+	measure 'Applicable Entity Count' =
+			VAR EntityLevel = SELECTEDVALUE(DimMetric[EntityLevel])
+			RETURN
+			    SWITCH(
+			        EntityLevel,
+			        "ISSUER",
+			            CALCULATE(
+			                COUNTROWS(FactIssuerMetricAvailability),
+			                REMOVEFILTERS(DimAvailabilityStatus),
+			                FactIssuerMetricAvailability[AvailabilityStatusKey] IN {1, 2, 3, 7, 8}
+			            ),
+			        "PLAN",
+			            CALCULATE(
+			                COUNTROWS(FactPlanMetricAvailability),
+			                REMOVEFILTERS(DimAvailabilityStatus),
+			                FactPlanMetricAvailability[AvailabilityStatusKey] IN {1, 2, 3, 7, 8}
+			            ),
+			        BLANK()
+			    )
+		formatString: #,##0
+		displayFolder: 09 Availability
+		lineageTag: 2f7cbdc2-09b0-5f3f-ad02-7e3e5aad638e
+
+	measure 'Data Availability Rate' = DIVIDE([Available Entity Count], [Applicable Entity Count])
+		formatString: 0.00%
+		displayFolder: 09 Availability
+		lineageTag: 2cfd1b78-ddeb-54f2-b212-ee76a7b03058
+
+	measure 'Suppression Rate' =
+			VAR EntityLevel = SELECTEDVALUE(DimMetric[EntityLevel])
+			VAR Suppressed =
+			    SWITCH(
+			        EntityLevel,
+			        "ISSUER",
+			            CALCULATE(
+			                COUNTROWS(FactIssuerMetricAvailability),
+			                REMOVEFILTERS(DimAvailabilityStatus),
+			                FactIssuerMetricAvailability[AvailabilityStatusKey] = 3
+			            ),
+			        "PLAN",
+			            CALCULATE(
+			                COUNTROWS(FactPlanMetricAvailability),
+			                REMOVEFILTERS(DimAvailabilityStatus),
+			                FactPlanMetricAvailability[AvailabilityStatusKey] = 3
+			            ),
+			        BLANK()
+			    )
+			RETURN
+			    IF(
+			        ISBLANK(EntityLevel),
+			        BLANK(),
+			        DIVIDE(COALESCE(Suppressed, 0), [Applicable Entity Count])
+			    )
+		formatString: 0.00%
+		displayFolder: 09 Availability
+		lineageTag: 50c32990-2acf-52f1-9c40-3dfcb0a5534e
+
+	measure 'Unavailable Rate' =
+			VAR EntityLevel = SELECTEDVALUE(DimMetric[EntityLevel])
+			VAR Unavailable =
+			    SWITCH(
+			        EntityLevel,
+			        "ISSUER",
+			            CALCULATE(
+			                COUNTROWS(FactIssuerMetricAvailability),
+			                REMOVEFILTERS(DimAvailabilityStatus),
+			                FactIssuerMetricAvailability[AvailabilityStatusKey] = 2
+			            ),
+			        "PLAN",
+			            CALCULATE(
+			                COUNTROWS(FactPlanMetricAvailability),
+			                REMOVEFILTERS(DimAvailabilityStatus),
+			                FactPlanMetricAvailability[AvailabilityStatusKey] = 2
+			            ),
+			        BLANK()
+			    )
+			RETURN
+			    IF(
+			        ISBLANK(EntityLevel),
+			        BLANK(),
+			        DIVIDE(COALESCE(Unavailable, 0), [Applicable Entity Count])
+			    )
+		formatString: 0.00%
+		displayFolder: 09 Availability
+		lineageTag: 5af78080-e8b3-5a09-afa6-fd29843c6c5f
+
+	measure 'Structural Non-Applicability Count' =
+			VAR EntityLevel = SELECTEDVALUE(DimMetric[EntityLevel])
+			RETURN
+			    SWITCH(
+			        EntityLevel,
+			        "ISSUER",
+			            CALCULATE(
+			                COUNTROWS(FactIssuerMetricAvailability),
+			                REMOVEFILTERS(DimAvailabilityStatus),
+			                FactIssuerMetricAvailability[AvailabilityStatusKey] IN {4, 5}
+			            ),
+			        "PLAN",
+			            CALCULATE(
+			                COUNTROWS(FactPlanMetricAvailability),
+			                REMOVEFILTERS(DimAvailabilityStatus),
+			                FactPlanMetricAvailability[AvailabilityStatusKey] IN {4, 5}
+			            ),
+			        BLANK()
+			    )
+		formatString: #,##0
+		displayFolder: 09 Availability
+		lineageTag: bef0d0c0-a615-5889-b566-303b4bd13438
+
+	measure 'Open DQ Exception Count' =
+			CALCULATE(
+			    COUNTROWS(DQExceptionRegister),
+			    DQExceptionRegister[ResolutionState] = "OPEN_REVIEW"
+			)
+		formatString: #,##0
+		displayFolder: 10 Data Quality
+		lineageTag: b2f7967f-79a4-5455-b7b9-24159dcc7ed2
+
+	measure 'Known Source Exception Row Count' =
+			CALCULATE(
+			    COUNTROWS(DQExceptionRegister),
+			    DQExceptionRegister[IsKnownSourceException] = TRUE()
+			)
+		formatString: #,##0
+		displayFolder: 10 Data Quality
+		lineageTag: 0b082fab-51e8-5236-9e09-8cb879b812be
+
+	measure 'Known Source Exception Entity Count' =
+			CALCULATE(
+			    DISTINCTCOUNT(DQExceptionRegister[EntityKey]),
+			    DQExceptionRegister[IsKnownSourceException] = TRUE()
+			)
+		formatString: #,##0
+		displayFolder: 10 Data Quality
+		lineageTag: 8a6c6aeb-d5c4-51ee-83f0-0afe6519deb6
+
+	measure 'Current Context DQ Exception Count' =
+			VAR VisiblePlanIDs =
+			    VALUES(DimPlan[PlanID])
+			VAR VisibleIssuerKeys =
+			    VALUES(DimPlan[IssuerKey])
+			VAR VisibleIssuerIDs =
+			    CALCULATETABLE(
+			        VALUES(DimIssuer[IssuerID]),
+			        TREATAS(VisibleIssuerKeys, DimIssuer[IssuerKey])
+			    )
+			VAR IssuerDQ =
+			    CALCULATE(
+			        COUNTROWS(DQExceptionRegister),
+			        DQExceptionRegister[Scope] = "ISSUER",
+			        TREATAS(VisibleIssuerIDs, DQExceptionRegister[EntityKey])
+			    )
+			VAR PlanDQ =
+			    CALCULATE(
+			        COUNTROWS(DQExceptionRegister),
+			        DQExceptionRegister[Scope] = "PLAN",
+			        TREATAS(VisiblePlanIDs, DQExceptionRegister[EntityKey])
+			    )
+			RETURN
+			    COALESCE(IssuerDQ, 0) + COALESCE(PlanDQ, 0)
+		formatString: #,##0
+		displayFolder: 10 Data Quality
+		lineageTag: e42f1f35-586a-5670-9090-928d7ce24d1c
+
+	measure 'Current Context Has DQ Flag' = IF([Current Context DQ Exception Count] > 0, 1, 0)
+		formatString: 0
+		displayFolder: 10 Data Quality
+		lineageTag: c4683f48-e19a-5788-8d0c-8da0a72e2712
+
+	measure 'Plan In-Network Denial Rate' =
+			VAR DeniedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 16,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR ReceivedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 14,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible = INTERSECT(DeniedEligible, ReceivedEligible)
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactPlanTransparency[ClaimsDeniedInNetwork]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactPlanTransparency[ClaimsReceivedInNetwork]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator)
+		formatString: 0.00%
+		displayFolder: 11 Plan Analytics
+		lineageTag: 4e819cd6-1c4d-5eeb-ac68-83a2f62c8154
+
+	measure 'Plan Out-of-Network Denial Rate' =
+			VAR DeniedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 15,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR ReceivedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 13,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible = INTERSECT(DeniedEligible, ReceivedEligible)
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactPlanTransparency[ClaimsDeniedOutOfNetwork]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactPlanTransparency[ClaimsReceivedOutOfNetwork]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator)
+		formatString: 0.00%
+		displayFolder: 11 Plan Analytics
+		lineageTag: d8b6af70-6e69-5ecd-8b16-a02788170972
+
+	measure 'Plan Comparable Overall Denial Rate' =
+			VAR RIn =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 14,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR ROut =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 13,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR DIn =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 16,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR DOut =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 15,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible =
+			    INTERSECT(INTERSECT(RIn, ROut), INTERSECT(DIn, DOut))
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactPlanTransparency[ClaimsDeniedInNetwork])
+			            + SUM(FactPlanTransparency[ClaimsDeniedOutOfNetwork]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactPlanTransparency[ClaimsReceivedInNetwork])
+			            + SUM(FactPlanTransparency[ClaimsReceivedOutOfNetwork]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator)
+		formatString: 0.00%
+		displayFolder: 11 Plan Analytics
+		lineageTag: b8c856dd-718c-5c4c-a974-a08bfac9388a
+
+	measure 'Plan Resubmission Events per 100 Denied - In Network' =
+			VAR ResubEligible =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 18,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR DeniedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 16,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible = INTERSECT(ResubEligible, DeniedEligible)
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactPlanTransparency[ClaimsResubmittedInNetwork]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactPlanTransparency[ClaimsDeniedInNetwork]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator) * 100
+		formatString: 0.00
+		displayFolder: 11 Plan Analytics
+		lineageTag: 66082c36-21e6-5806-8e0f-02e148f3796f
+
+	measure 'Plan Resubmission Events per 100 Denied - Out of Network' =
+			VAR ResubEligible =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 17,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR DeniedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactPlanMetricAvailability[PlanKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactPlanMetricAvailability[MetricKey] = 15,
+			        FactPlanMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible = INTERSECT(ResubEligible, DeniedEligible)
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactPlanTransparency[ClaimsResubmittedOutOfNetwork]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactPlanTransparency[ClaimsDeniedOutOfNetwork]),
+			        TREATAS(Eligible, FactPlanTransparency[PlanKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator) * 100
+		formatString: 0.00
+		displayFolder: 11 Plan Analytics
+		lineageTag: d12ff660-635e-5fd1-86e3-8da5c902a27c
+
+	measure 'Internal Appeal Overturn Rate - Excluding Known Source Exception' =
+			VAR FiledEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 7,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR OverturnedEligible =
+			    CALCULATETABLE(
+			        VALUES(FactIssuerMetricAvailability[IssuerKey]),
+			        REMOVEFILTERS(DimMetric),
+			        REMOVEFILTERS(DimAvailabilityStatus),
+			        FactIssuerMetricAvailability[MetricKey] = 8,
+			        FactIssuerMetricAvailability[AvailabilityStatusKey] = 1
+			    )
+			VAR Eligible = INTERSECT(FiledEligible, OverturnedEligible)
+			VAR ExceptionIssuerIDs =
+			    CALCULATETABLE(
+			        VALUES(DQExceptionRegister[EntityKey]),
+			        DQExceptionRegister[Scope] = "ISSUER",
+			        DQExceptionRegister[IsKnownSourceException] = TRUE()
+			    )
+			VAR ExceptionIssuerKeys =
+			    CALCULATETABLE(
+			        VALUES(DimIssuer[IssuerKey]),
+			        TREATAS(ExceptionIssuerIDs, DimIssuer[IssuerID])
+			    )
+			VAR FinalEligible = EXCEPT(Eligible, ExceptionIssuerKeys)
+			VAR Numerator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[InternalAppealsOverturned]),
+			        TREATAS(FinalEligible, FactIssuerTransparency[IssuerKey])
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        SUM(FactIssuerTransparency[InternalAppealsFiled]),
+			        TREATAS(FinalEligible, FactIssuerTransparency[IssuerKey])
+			    )
+			RETURN DIVIDE(Numerator, Denominator)
+		formatString: 0.00%
+		displayFolder: 12 Sensitivity
+		lineageTag: 88353473-83c7-5739-875d-fc871062f0c7
+
+	column Placeholder
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 35ad4ac3-84c7-566f-bc7c-897c9f0987c1
+		summarizeBy: none
+		sourceColumn: Placeholder
+
+		annotation SummarizationSetBy = User
+
+	partition _Measures = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [Placeholder = Int64.Type], {})
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,9 @@
+* text=auto
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+# Preserve the validated source bytes, including existing line endings.
+powerbi/** -text
+data/canonical/*.csv -text
+*.xlsx binary
+*.png binary

@@ -1,0 +1,74 @@
+table DimReportingPeriod
+	lineageTag: 5bd7cf60-48ef-426d-9215-f6a7c99da083
+
+	column ReportingPeriodKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 1849f204-885a-4108-aba3-d81ea0f84da8
+		summarizeBy: none
+		sourceColumn: ReportingPeriodKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PUFYear
+		dataType: int64
+		formatString: 0
+		lineageTag: e0b8d7e7-b3e4-491b-9b3e-38cc7b59729a
+		summarizeBy: sum
+		sourceColumn: PUFYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column ExperienceYear
+		dataType: int64
+		formatString: 0
+		lineageTag: 515c6c8d-e2ee-43ac-b9bb-02a582d50a2f
+		summarizeBy: none
+		sourceColumn: ExperienceYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column PeriodStartDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1bfcc850-2128-4a25-a6ad-079bc1a23eef
+		summarizeBy: none
+		sourceColumn: PeriodStartDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PeriodEndDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: cf6baf53-5e55-4f3a-aaf0-ac42e14fba3f
+		summarizeBy: none
+		sourceColumn: PeriodEndDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition DimReportingPeriod = m
+		mode: import
+		source =
+				let
+				    Source =
+				        fxLoadCanonicalCsv(
+				            "dim_reporting_period.csv",
+				            {
+				                {"ReportingPeriodKey", Int64.Type},
+				                {"PUFYear", Int64.Type},
+				                {"ExperienceYear", Int64.Type},
+				                {"PeriodStartDate", type date},
+				                {"PeriodEndDate", type date}
+				            }
+				        )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,131 @@
+table DQExceptionRegister
+	lineageTag: 6c414e79-2cf4-402d-8d71-a78d6875b56e
+
+	column DQExceptionID
+		dataType: int64
+		formatString: 0
+		lineageTag: 6062feae-07db-4ec1-9bce-3c31fc3c867b
+		summarizeBy: count
+		sourceColumn: DQExceptionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Severity
+		dataType: string
+		lineageTag: 287fbb51-3915-427b-a333-7a8b6591094e
+		summarizeBy: none
+		sourceColumn: Severity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Scope
+		dataType: string
+		lineageTag: 4c9d8cd6-bb37-448a-b8a4-50d326c7a107
+		summarizeBy: none
+		sourceColumn: Scope
+
+		annotation SummarizationSetBy = Automatic
+
+	column EntityKey
+		dataType: string
+		lineageTag: 7833448e-051d-4a67-98fc-ee41a9a0e35b
+		summarizeBy: none
+		sourceColumn: EntityKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceField
+		dataType: string
+		lineageTag: d06eca06-fb13-4407-af36-a4ee940040ab
+		summarizeBy: none
+		sourceColumn: SourceField
+
+		annotation SummarizationSetBy = Automatic
+
+	column RuleCode
+		dataType: string
+		lineageTag: 61e2636c-ac66-43f2-99ba-90ec57bbe045
+		summarizeBy: none
+		sourceColumn: RuleCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column ObservedValue
+		dataType: string
+		lineageTag: 57109a38-4a73-49c9-9188-a44c1759ec07
+		summarizeBy: none
+		sourceColumn: ObservedValue
+
+		annotation SummarizationSetBy = Automatic
+
+	column ExpectedCondition
+		dataType: string
+		lineageTag: 7eca6928-6e6b-41c9-b5ed-f175afc2c188
+		summarizeBy: none
+		sourceColumn: ExpectedCondition
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSheet
+		dataType: string
+		lineageTag: 4afd522f-e7f7-4f35-b039-f8ff7e42a2ed
+		summarizeBy: none
+		sourceColumn: SourceSheet
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceExcelRow
+		dataType: int64
+		formatString: 0
+		lineageTag: 4356babf-4fa5-40d2-a6af-b3bdaa60d43a
+		summarizeBy: sum
+		sourceColumn: SourceExcelRow
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsKnownSourceException
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d1b14599-73e8-4152-a9a3-a0a145dfe632
+		summarizeBy: none
+		sourceColumn: IsKnownSourceException
+
+		annotation SummarizationSetBy = Automatic
+
+	column ResolutionState
+		dataType: string
+		lineageTag: 6aae13d0-30da-4a14-8fdf-72c9a9f8d883
+		summarizeBy: none
+		sourceColumn: ResolutionState
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DQExceptionRegister = m
+		mode: import
+		source =
+				let
+				    Source =
+				        fxLoadCanonicalCsv(
+				            "dq_exception_register.csv",
+				            {
+				                {"DQExceptionID", Int64.Type},
+				                {"Severity", type text},
+				                {"Scope", type text},
+				                {"EntityKey", type text},
+				                {"SourceField", type text},
+				                {"RuleCode", type text},
+				                {"ObservedValue", type text},
+				                {"ExpectedCondition", type text},
+				                {"SourceSheet", type text},
+				                {"SourceExcelRow", Int64.Type},
+				                {"IsKnownSourceException", type logical},
+				                {"ResolutionState", type text}
+				            }
+				        )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

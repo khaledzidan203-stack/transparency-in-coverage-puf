@@ -1,0 +1,9 @@
+﻿StatusKey,StatusCode,IsNumericAvailable,IsDisclosureLimited,IsDQIssue
+1,AVAILABLE,True,False,False
+2,NOT_AVAILABLE,False,True,False
+3,SUPPRESSED_SMALL_CELL,False,True,False
+4,NOT_REQUIRED_PLAN_TYPE,False,False,False
+5,NOT_APPLICABLE_NEW_ENTITY,False,False,False
+6,MISSING_URL,False,False,False
+7,SOURCE_MISSING_UNEXPECTED,False,False,True
+8,INVALID_NUMERIC_SOURCE,False,False,True

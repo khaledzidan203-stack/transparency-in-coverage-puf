@@ -1,0 +1,79 @@
+table FactIssuerMetricAvailability
+	lineageTag: 6f49b0c8-8828-4f27-9587-2ac56a9b86b1
+
+	column ReportingPeriodKey
+		dataType: int64
+		formatString: 0
+		lineageTag: d5be3581-5b9e-443d-aaa1-baae087cea1b
+		summarizeBy: none
+		sourceColumn: ReportingPeriodKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: bf892b1d-ec9d-4d5e-8ece-b973f554f00d
+		summarizeBy: none
+		sourceColumn: StateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column IssuerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 6ffbd1fb-fbfd-478b-85ea-e7d2f02be3a8
+		summarizeBy: count
+		sourceColumn: IssuerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column MetricKey
+		dataType: int64
+		formatString: 0
+		lineageTag: bd3ca056-4937-495b-aefc-d21410e6fd7e
+		summarizeBy: count
+		sourceColumn: MetricKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column AvailabilityStatusKey
+		dataType: int64
+		formatString: 0
+		lineageTag: b2161f2e-9251-4000-83b4-af8fdd3ce912
+		summarizeBy: count
+		sourceColumn: AvailabilityStatusKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceStatusToken
+		dataType: string
+		lineageTag: ce93bb58-fd1e-4a60-acd6-73348d0d9d7b
+		summarizeBy: none
+		sourceColumn: SourceStatusToken
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactIssuerMetricAvailability = m
+		mode: import
+		source =
+				let
+				    Source =
+				        fxLoadCanonicalCsv(
+				            "fact_issuer_metric_availability.csv",
+				            {
+				                {"ReportingPeriodKey", Int64.Type},
+				                {"StateKey", Int64.Type},
+				                {"IssuerKey", Int64.Type},
+				                {"MetricKey", Int64.Type},
+				                {"AvailabilityStatusKey", Int64.Type},
+				                {"SourceStatusToken", type text}
+				            }
+				        )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

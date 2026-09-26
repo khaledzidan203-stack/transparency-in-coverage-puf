@@ -1,0 +1,31 @@
+# Local release checkpoint and regenerated review evidence
+.local-release/
+.local-review/
+Transparency_PUF_Review/
+/Transparency_in_Coverage_PUF.xlsx
+*_REPORT.xlsx
+*_VALIDATION.xlsx
+*.zip
+*.log
+*.tmp
+~$*
+
+# Python and editor caches
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.vscode/
+.idea/
+
+# Power BI machine-specific state (definitions remain tracked)
+**/.pbi/
+**/.pbiCache/
+*.pbix
+*.pbit
+
+# Credentials and local configuration
+.env
+.env.*
+*.pem
+*.key

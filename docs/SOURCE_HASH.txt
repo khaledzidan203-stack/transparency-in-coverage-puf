@@ -1,0 +1,2 @@
+SHA256 27379dc76590027b0e6d21d736331f87376f0ac87810d68e9f7cca555eef4b1f
+data/raw/Transparency_in_Coverage_PUF.xlsx

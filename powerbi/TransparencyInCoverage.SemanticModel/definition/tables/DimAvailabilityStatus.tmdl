@@ -1,0 +1,69 @@
+table DimAvailabilityStatus
+	lineageTag: 58474151-74a6-4cee-af8f-b3a5cf7e47a0
+
+	column StatusKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 5722dfa9-72fe-43c0-b441-65fd5b5656e0
+		summarizeBy: count
+		sourceColumn: StatusKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StatusCode
+		dataType: string
+		lineageTag: cd7a0fa9-cba0-4d29-ae52-9337018cdd4f
+		summarizeBy: none
+		sourceColumn: StatusCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsNumericAvailable
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 4b233552-720a-4c03-a2f6-0acc053a4312
+		summarizeBy: none
+		sourceColumn: IsNumericAvailable
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsDisclosureLimited
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1a3c5e1f-c63f-4926-8f3e-eb9056c50c77
+		summarizeBy: none
+		sourceColumn: IsDisclosureLimited
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsDQIssue
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b04a158c-d38c-42cd-8cf4-fafb69946d98
+		summarizeBy: none
+		sourceColumn: IsDQIssue
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimAvailabilityStatus = m
+		mode: import
+		source =
+				let
+				    Source =
+				        fxLoadCanonicalCsv(
+				            "dim_availability_status.csv",
+				            {
+				                {"StatusKey", Int64.Type},
+				                {"StatusCode", type text},
+				                {"IsNumericAvailable", type logical},
+				                {"IsDisclosureLimited", type logical},
+				                {"IsDQIssue", type logical}
+				            }
+				        )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

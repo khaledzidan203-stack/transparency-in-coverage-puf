@@ -1,0 +1,48 @@
+table DimState
+	lineageTag: 719446a1-6239-46e5-a0f8-f5ba56e49f15
+
+	column StateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: f00af884-cf14-450b-a71b-4885b03abbe3
+		summarizeBy: none
+		sourceColumn: StateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateCode
+		dataType: string
+		lineageTag: 20f46b57-8943-444f-b82e-01ccac224704
+		summarizeBy: none
+		sourceColumn: StateCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column ExchangeType
+		dataType: string
+		lineageTag: d845a741-861a-4741-8c95-3f71167c55bf
+		summarizeBy: none
+		sourceColumn: ExchangeType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimState = m
+		mode: import
+		source =
+				let
+				    Source =
+				        fxLoadCanonicalCsv(
+				            "dim_state.csv",
+				            {
+				                {"StateKey", Int64.Type},
+				                {"StateCode", type text},
+				                {"ExchangeType", type text}
+				            }
+				        )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

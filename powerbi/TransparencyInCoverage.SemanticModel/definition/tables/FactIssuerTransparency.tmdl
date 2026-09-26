@@ -1,0 +1,223 @@
+table FactIssuerTransparency
+	lineageTag: dc084965-08cb-4fdf-9a37-c95ade0cafbf
+
+	column ReportingPeriodKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 6624641b-842c-4111-8222-9392399b1256
+		summarizeBy: none
+		sourceColumn: ReportingPeriodKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: d269d709-65bc-49c2-85bd-10f7bfbee580
+		summarizeBy: none
+		sourceColumn: StateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column IssuerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 0b3420ff-e1a9-4245-bf05-5442b2fba1b1
+		summarizeBy: count
+		sourceColumn: IssuerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimsReceivedOutOfNetwork
+		dataType: int64
+		formatString: 0
+		lineageTag: 7f0a34d2-434a-4a03-adf5-a44abfdfd152
+		summarizeBy: sum
+		sourceColumn: ClaimsReceivedOutOfNetwork
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimsReceivedInNetwork
+		dataType: int64
+		formatString: 0
+		lineageTag: 93bdc01f-5605-4e6b-823c-a24c7de3b358
+		summarizeBy: sum
+		sourceColumn: ClaimsReceivedInNetwork
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimsDeniedOutOfNetwork
+		dataType: int64
+		formatString: 0
+		lineageTag: bed94b75-e726-468f-b7d5-849f56ad9db8
+		summarizeBy: sum
+		sourceColumn: ClaimsDeniedOutOfNetwork
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimsDeniedInNetwork
+		dataType: int64
+		formatString: 0
+		lineageTag: 67cf0232-18ae-4c54-9c59-1dde9171af22
+		summarizeBy: sum
+		sourceColumn: ClaimsDeniedInNetwork
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimsResubmittedOutOfNetwork
+		dataType: int64
+		formatString: 0
+		lineageTag: f8523d9c-b4a5-469e-9fec-4a908f21ce66
+		summarizeBy: sum
+		sourceColumn: ClaimsResubmittedOutOfNetwork
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimsResubmittedInNetwork
+		dataType: int64
+		formatString: 0
+		lineageTag: ed13d139-9c3d-4479-996c-16d5d2eb55a5
+		summarizeBy: sum
+		sourceColumn: ClaimsResubmittedInNetwork
+
+		annotation SummarizationSetBy = Automatic
+
+	column InternalAppealsFiled
+		dataType: int64
+		formatString: 0
+		lineageTag: 7fcf7d23-3161-4906-ad9c-b0ba7cbf9afc
+		summarizeBy: sum
+		sourceColumn: InternalAppealsFiled
+
+		annotation SummarizationSetBy = Automatic
+
+	column InternalAppealsOverturned
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a1acb90-e232-4139-8684-503bdca40c9a
+		summarizeBy: sum
+		sourceColumn: InternalAppealsOverturned
+
+		annotation SummarizationSetBy = Automatic
+
+	column InternalAppealsOverturnPctPublished
+		dataType: double
+		lineageTag: 7ee07772-1e0b-47bb-bb17-4174ad719492
+		summarizeBy: sum
+		sourceColumn: InternalAppealsOverturnPctPublished
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ExternalAppealsFiled
+		dataType: int64
+		formatString: 0
+		lineageTag: 01f76787-d871-48f5-b2ad-c796f93d7a73
+		summarizeBy: sum
+		sourceColumn: ExternalAppealsFiled
+
+		annotation SummarizationSetBy = Automatic
+
+	column ExternalAppealsOverturned
+		dataType: int64
+		formatString: 0
+		lineageTag: c6f690c1-e82e-4f18-b098-d5f6698b67c9
+		summarizeBy: sum
+		sourceColumn: ExternalAppealsOverturned
+
+		annotation SummarizationSetBy = Automatic
+
+	column ExternalAppealsOverturnPctPublished
+		dataType: double
+		lineageTag: c44d8604-61ea-4295-81dd-c7a5e5054e49
+		summarizeBy: sum
+		sourceColumn: ExternalAppealsOverturnPctPublished
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SourcePlanRowCount
+		dataType: int64
+		formatString: 0
+		lineageTag: d3e92f03-3445-4c42-9b09-9f93ecb358f1
+		summarizeBy: sum
+		sourceColumn: SourcePlanRowCount
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSheetCount
+		dataType: int64
+		formatString: 0
+		lineageTag: 7bb3ca2d-6299-42f5-97f5-67269baf796e
+		summarizeBy: sum
+		sourceColumn: SourceSheetCount
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSheets
+		dataType: string
+		lineageTag: bc3f92d4-54d0-4c78-865f-77ae527addb6
+		summarizeBy: none
+		sourceColumn: SourceSheets
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceFileName
+		dataType: string
+		lineageTag: 3d994521-2919-4d1f-b51a-26e34e3c01ed
+		summarizeBy: none
+		sourceColumn: SourceFileName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceFileSHA256
+		dataType: string
+		lineageTag: 169d113d-7e7f-461e-8944-933eabd8ff0a
+		summarizeBy: none
+		sourceColumn: SourceFileSHA256
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactIssuerTransparency = m
+		mode: import
+		source =
+				let
+				    Source =
+				        fxLoadCanonicalCsv(
+				            "fact_issuer_transparency.csv",
+				            {
+				                {"ReportingPeriodKey", Int64.Type},
+				                {"StateKey", Int64.Type},
+				                {"IssuerKey", Int64.Type},
+				
+				                {"ClaimsReceivedOutOfNetwork", Int64.Type},
+				                {"ClaimsReceivedInNetwork", Int64.Type},
+				                {"ClaimsDeniedOutOfNetwork", Int64.Type},
+				                {"ClaimsDeniedInNetwork", Int64.Type},
+				                {"ClaimsResubmittedOutOfNetwork", Int64.Type},
+				                {"ClaimsResubmittedInNetwork", Int64.Type},
+				
+				                {"InternalAppealsFiled", Int64.Type},
+				                {"InternalAppealsOverturned", Int64.Type},
+				                {"InternalAppealsOverturnPctPublished", type number},
+				
+				                {"ExternalAppealsFiled", Int64.Type},
+				                {"ExternalAppealsOverturned", Int64.Type},
+				                {"ExternalAppealsOverturnPctPublished", type number},
+				
+				                {"SourcePlanRowCount", Int64.Type},
+				                {"SourceSheetCount", Int64.Type},
+				                {"SourceSheets", type text},
+				                {"SourceFileName", type text},
+				                {"SourceFileSHA256", type text}
+				            }
+				        )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
