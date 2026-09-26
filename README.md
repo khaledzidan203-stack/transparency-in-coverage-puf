@@ -8,7 +8,7 @@ An end-to-end Python and Power BI analysis of the CMS Transparency in Coverage P
 
 This insurer/plan-level public-use dataset contains no patient-level data. The report covers claims denials, denial reasons, appeals, resubmissions, enrollment, metric availability, and data quality. Results describe reported activity and eligible populations, not insurer quality or causal effects.
 
-**Release review:** all 11 screenshots are included. A pre-existing scope-chart discrepancy on page 10 remains documented in [known limitations](docs/KNOWN_LIMITATIONS.md); the saved report has been preserved without redesign.
+**Release validation:** all 11 screenshots are included. Page 10 passes with ISSUER=5, PLAN=33 and Total=38 after the approved `KEEPFILTERS` correction. Fresh runtime DAX reconciliation passes all 63 checks with zero failures. [Validation evidence](docs/VALIDATION_EVIDENCE.md)
 
 ## Business questions
 
@@ -106,7 +106,7 @@ The INDEX organizes the analytical journey. Report pages provide return navigati
 
 ## Validation strategy
 
-Source hashes, grain uniqueness, key integrity, availability semantics, relationship structure and KPI reconciliation are checked separately. Runtime DAX reconciliation is retained as historical evidence; PBIR parsing and reference checks validate the saved report without rebuilding it. Fresh release checks and historical runtime evidence are distinguished in the [validation framework](docs/VALIDATION_FRAMEWORK.md) and [release checklist](docs/GITHUB_RELEASE_CHECKLIST.md).
+Source hashes, grain uniqueness, key integrity, availability semantics, relationship structure and KPI reconciliation are checked separately. Fresh runtime DAX reconciliation passed 32 core, 10 reason, 18 availability and 3 DQ context checks, with zero failures. PBIR parsing and reference checks validate the saved report without rebuilding it. Runtime evidence and final release checks are documented in the [validation framework](docs/VALIDATION_FRAMEWORK.md) and [release checklist](docs/GITHUB_RELEASE_CHECKLIST.md).
 
 ## Repository structure
 
@@ -153,7 +153,7 @@ python src/validation/11_audit_powerbi_report_structure.py
 python src/validation/release_audit.py
 ```
 
-Optional live check: `python src/validation/09_runtime_dax_reconciliation.py` requires an already installed DAX Studio CLI and this PBIP open in Power BI Desktop. It was not rerun during finalization because that live environment was unavailable. Do not run the historical model installers, report builders or patch scripts as a reproduction sequence.
+Optional live check: `python src/validation/09_runtime_dax_reconciliation.py` requires an already installed DAX Studio CLI and this PBIP open in Power BI Desktop. The fresh successful run is recorded in [validation evidence](docs/VALIDATION_EVIDENCE.md); its local review workbook remains ignored. Do not run the historical model installers, report builders or patch scripts as a reproduction sequence.
 
 ### Power BI
 

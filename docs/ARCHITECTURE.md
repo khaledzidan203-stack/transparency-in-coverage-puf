@@ -15,6 +15,6 @@ The raw workbook feeds discovery and transformation, producing 11 canonical CSVs
 
 Issuer business grain is experience year × state × issuer. Plan grain is experience year × plan. The 14 saved relationships are active and single-direction. State filters propagate through DimIssuer, then DimPlan where appropriate; issuer facts connect to DimIssuer and plan facts to DimPlan. The period dimension connects to the four facts. Metric and status dimensions connect to the availability facts. These saved paths supersede conceptual direct-conformed-key sketches in the original contract; the contract's grain and KPI meaning remain unchanged.
 
-DQ entity context is explicitly applied in DAX because the exception register is disconnected. The page-10 scope-chart limitation is documented in [known limitations](KNOWN_LIMITATIONS.md).
+DQ entity context is explicitly applied in DAX because the exception register is disconnected. The approved `KEEPFILTERS` correction preserves the Scope filter in `Current Context DQ Exception Count`. Page 10 now passes: ISSUER=5, PLAN=33, Total=38.
 
-No analytical data, DAX, Power Query, relationships, report layout or screenshot was changed in repository finalization. Users configure the existing data-folder parameter for their own clone. Local `.pbi` state is not versioned.
+The public-release update contains only the approved DQ filter-context DAX correction, the refreshed page-10 screenshot and the saved active-page selection. Analytical data, other DAX, Power Query, relationships and report layout remain unchanged. Users configure the existing data-folder parameter for their own clone. Local `.pbi` state is not versioned.

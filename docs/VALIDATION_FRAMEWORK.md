@@ -14,7 +14,7 @@ Validation separates source/data integrity, model structure, runtime measures an
 
 ## Runtime DAX reconciliation
 
-`09_runtime_dax_reconciliation.py` compares live DAX with Python baselines using declared tolerances. The historical local workbook `09_DAX_RUNTIME_RECONCILIATION.xlsx`, inspected during finalization, records PASS: 32 core, 10 reason, 18 availability and 3 DQ context checks, zero failures. This is prior evidence, not a new runtime execution or proof of every later visual interaction. The live PBIP/Desktop and DAX Studio CLI prerequisites were unavailable during finalization. A sanitized summary is retained in [validation evidence](VALIDATION_EVIDENCE.md); the temporary workbook remains local.
+`09_runtime_dax_reconciliation.py` compares live DAX with Python baselines using declared tolerances. The fresh local workbook `.local-review/09_DAX_RUNTIME_RECONCILIATION.xlsx`, generated after the approved fix and inspected read-only during this update, records PASS: 32 core, 10 reason, 18 availability and 3 DQ context checks, zero failures. Runtime reconciliation did not modify project or Power BI source. These checks cover the recorded queries, not every possible visual interaction. A sanitized summary is retained in [validation evidence](VALIDATION_EVIDENCE.md); the temporary workbook remains local.
 
 ## PBIR and release checks
 
@@ -22,4 +22,4 @@ Validation separates source/data integrity, model structure, runtime measures an
 
 ## Data quality and immutable design
 
-36 open-review rows, 2 preserved known-source rows and 161 diagnostic observations retain their distinct meanings. No clipping, imputation or cross-grain summing is permitted. Fresh model/data/report/screenshot hashes are compared with the pre-release checkpoint. The page-10 scope-chart discrepancy remains a public-release review item. See [release checklist](GITHUB_RELEASE_CHECKLIST.md) for verified results and limits.
+36 open-review rows, 2 preserved known-source rows and 161 diagnostic observations retain their distinct meanings. No clipping, imputation or cross-grain summing is permitted. Final source hashes are compared with the reviewed public-release checkpoint. The release audit accepts an explicit `--baseline` manifest for an approved update and otherwise compares protected tracked files with Git HEAD, avoiding the superseded private-release checkpoint. The page-10 scope-chart issue is resolved: ISSUER=5, PLAN=33, Total=38. See [release checklist](GITHUB_RELEASE_CHECKLIST.md) for verified results and limits.

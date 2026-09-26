@@ -1,37 +1,37 @@
 # GitHub release checklist
 
-Audit date: 2026-09-26. Scope: private repository publication of the saved project. Public promotion remains subject to the separately listed review items.
+Final public-release audit: 2026-09-26. The earlier page-10 issue is resolved. This update includes the already completed approved correction, refreshed screenshot and fresh runtime evidence.
 
 | Gate | Result | Evidence / boundary |
 |---|---|---|
-| README structure and local links | PASS | Logical Markdown/HTML structure reviewed; 84 local links resolve; hero and compact gallery reference real images |
-| Referenced screenshots exist | PASS | All 11 supplied PNGs present; reviewed without editing |
-| PBIP and semantic definitions present | PASS | Entry point, report-model reference, 17 TMDL files |
-| KPI and canonical integrity | PASS | 32/32 checks, PASS_WITH_CONTEXT, no failures |
-| Semantic model checks | PASS | 29/29 checks after correcting two stale pre-DAX validator expectations; 14 active single-direction relationships, 43 measures |
-| PBIR structure | PASS | 11 pages, 371 visuals, 385 report JSON files, zero parse warnings |
-| Full Microsoft schema / live rendering validation | NOT RUN | Structural parsing is not full schema or engine validation |
-| Python compile | PASS | All 41 original scripts plus the release audit compile; historical scripts not executed |
-| Secret and redaction scan | PASS | Publication text and raw workbook XML scanned; no credential or personal-path findings; no email matches |
-| Screenshot / workbook metadata | PASS | No PNG text/EXIF metadata chunks; source workbook creator and lastModifiedBy empty; no personal data seen in screenshots |
-| Personal temporary paths in public docs | PASS | Removed original local environment paths; source hash uses relative path |
-| Required documentation | PASS | README, contracts, index, plan, changelog, architecture, framework, security, page guide and limitations present |
-| Ignore rules and staged contents | PASS | 499 intended files staged; git check-ignore confirms local checkpoint, evidence, duplicate root workbook and PBIP cache exclusions |
-| Repository size and file limits | PASS | Approximately 10 MB publication files; largest file 1,601,891 bytes; no file near 100 MiB |
-| Source data policy | PASS | CMS source and terms linked, hash-pinned raw workbook and 11 small derived CSVs included |
-| Duplicates | PASS | Root workbook equals raw SHA-256; excluded, not deleted |
-| Validation work retained | PASS | All 41 original scripts retained, including historical engineering; classified in inventory |
-| Protected source unchanged | PASS | 436 original data, Power BI and screenshot files match the pre-release SHA-256 checkpoint |
-| Temporary review XLSX / ZIP staged | PASS | Zero temporary XLSX or ZIP files in the staged index; only the raw source workbook is included |
-| Fresh live runtime DAX reconciliation | NOT RUN | Desktop/live model and DAX Studio CLI prerequisites unavailable; historical workbook records PASS, zero failures |
-| Page-10 scope breakdown | FAIL — existing visual issue | Screenshot shows 38 for each scope; canonical register has ISSUER 5 / PLAN 33. Preserved and disclosed, not repaired under this task |
-| Software license | NOT ADDED | No existing or unambiguous project license; source-data terms do not license project code |
-| Private GitHub push | PASS | Initial main push succeeded; GitHub API and local HEAD both resolved to 76aadf3c081b8704d7892d43d906808905c6ab63; visibility PRIVATE and main default branch verified |
+| README and local links | PASS | Updated release status; 84 local documentation/image links resolve |
+| Screenshot coverage | PASS | All 11 PNGs present; corrected page-10 image visually inspected: ISSUER=5, PLAN=33, Total=38 |
+| PBIP and semantic definitions | PASS | Valid project/report/model paths; saved TMDL definitions retained |
+| KPI / canonical integrity | PASS | Fresh read-only run: 32/32 acceptance checks; PASS_WITH_CONTEXT; zero failures |
+| Semantic model checks | PASS | Fresh read-only run: 29/29 checks, 14 active single-direction relationships, 43 measures |
+| JSON / PBIR structure | PASS | 390 JSON-format publication files parse; report audit: 385 report JSON files, 11 pages, 371 visuals, zero parse warnings; 20 navigation targets resolve |
+| Python compilation | PASS | All 43 Python scripts compile, including script 44; no mutating script executed |
+| Secret / redaction scan | PASS | Publication text and raw workbook XML scanned; no detected credential, personal-path or email findings |
+| Personal paths in public documentation | PASS | No personal absolute paths or temporary review locations exposed; evidence uses repository-relative paths |
+| Required documentation | PASS | README, index, plan, changelog, inventory, architecture, governance, page guide, limitations and validation evidence reflect the corrected state |
+| Repository size | PASS | Approximately 9.94 MB across 500 publication files; largest file 1,601,891 bytes |
+| Source data policy | PASS | Hash-pinned raw workbook and 11 canonical CSVs unchanged; attribution and terms documented |
+| Validation work retained | PASS | Original 41 scripts, release audit and script 44 retained; 44 classified as historical targeted semantic-model patch, not a validator |
+| Approved change scope | PASS | Exact DAX comparison confirms only two KEEPFILTERS wrappers inside Current Context DQ Exception Count; other DAX, Power Query, relationships, colors and visual geometry unchanged |
+| Preservation during final checks | PASS | 433 tracked data, Power BI and screenshot files match the reviewed public-update checkpoint; no report/model writer executed |
+| Additional saved report metadata | PASS | Only activePageName changes from INDEX to page 10; page order and visual definitions unchanged |
+| Fresh live runtime DAX reconciliation | PASS | Fresh local workbook inspected: 32 core, 10 reason, 18 availability and 3 DQ context checks; all detail rows PASS; total failures 0 |
+| Page-10 scope breakdown | PASS | ISSUER 5 / PLAN 33 / Total 38; previous issue RESOLVED |
+| Local review / ZIP / cache exclusion | PASS | Ignore rules verified; only intended publication paths selected for staging; no review XLSX, backup ZIP or Power BI cache is part of this update |
+| Full Microsoft schema validation | NOT RUN | Local parsing/reference checks and runtime DAX checks do not constitute full Microsoft schema validation |
+| Software license | NOT ADDED | Licensing remains undecided; no license invented |
 
-No analytical logic, DAX, Power Query, semantic relationships, report colors or visual geometry changed. No package, CLI, dependency or Git LFS component was installed. No PBIR builder or model patcher was executed.
+Fresh runtime reconciliation was already completed before this update and its workbook was inspected read-only. The workbook remains ignored at `.local-review/09_DAX_RUNTIME_RECONCILIATION.xlsx`; [validation evidence](VALIDATION_EVIDENCE.md) records its SHA-256. It is not part of the commit.
 
-## Before making public
+## Publication sequence
 
-Review the page-10 discrepancy in Power BI and decide on a separately authorized correction and screenshot refresh. Repeat runtime reconciliation in the configured live environment before claiming fresh runtime coverage. Choose software licensing if reuse is intended. See [known limitations](KNOWN_LIMITATIONS.md).
+Repository: [transparency-in-coverage-puf](https://github.com/khaledzidan203-stack/transparency-in-coverage-puf). The existing remote main was fetched and matched local HEAD before this update. Publication uses one coherent commit on main, a normal push, remote-SHA verification, then the authorized visibility change to public. GitHub commit history and repository visibility show the final publication state.
 
-Repository: [transparency-in-coverage-puf](https://github.com/khaledzidan203-stack/transparency-in-coverage-puf). Ten relevant topics are configured. The follow-up documentation commit records this verified publication result; GitHub history provides the current commit identity.
+## Portfolio use
+
+Page 10 and fresh runtime validation no longer have unresolved release warnings. Preserve the documented analytical interpretation limits and set DataFolderPath when refreshing another clone. Choose a software license if broader code reuse is intended. See [known limitations](KNOWN_LIMITATIONS.md).

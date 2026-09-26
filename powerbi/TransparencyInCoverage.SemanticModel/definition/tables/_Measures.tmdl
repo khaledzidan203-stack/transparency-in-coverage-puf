@@ -937,13 +937,13 @@ table _Measures
 			VAR IssuerDQ =
 			    CALCULATE(
 			        COUNTROWS(DQExceptionRegister),
-			        DQExceptionRegister[Scope] = "ISSUER",
+			        KEEPFILTERS(DQExceptionRegister[Scope] = "ISSUER"),
 			        TREATAS(VisibleIssuerIDs, DQExceptionRegister[EntityKey])
 			    )
 			VAR PlanDQ =
 			    CALCULATE(
 			        COUNTROWS(DQExceptionRegister),
-			        DQExceptionRegister[Scope] = "PLAN",
+			        KEEPFILTERS(DQExceptionRegister[Scope] = "PLAN"),
 			        TREATAS(VisiblePlanIDs, DQExceptionRegister[EntityKey])
 			    )
 			RETURN

@@ -49,10 +49,12 @@ No files were moved or deleted. Historical scripts remain in place to preserve p
 | src/validation/41_build_data_quality_methodology.py | mutating report/model engineering | historical | KEEP | Retain in place: numbered scripts and baseline audit contain path dependencies; never run as release pipeline |
 | src/validation/42_rebuild_index_storytelling.py | mutating report/model engineering | historical | KEEP | Retain in place: numbered scripts and baseline audit contain path dependencies; never run as release pipeline |
 | src/validation/43_patch_navigation_hover_tooltips.py | mutating report/model engineering | historical | KEEP | Retain in place: numbered scripts and baseline audit contain path dependencies; never run as release pipeline |
+| src/validation/44_fix_dq_scope_filter_context.py | targeted semantic-model patch (MUTATES DAX) | historical, already applied | KEEP | Wraps two Scope predicates in KEEPFILTERS; local backup/evidence writes; reviewed only, do not rerun or treat as a validator |
+| src/validation/release_audit.py | read-only publication audit | current | KEEP | Compiles scripts and validates publication files; writes ignored evidence only |
 
 ## File inventory
 
-The table records the pre-edit inventory. KEEP includes documentation improved during finalization. All 41 original scripts are retained. Local caches, review outputs and the safety checkpoint are excluded from publication.
+The table records the pre-edit inventory. KEEP includes documentation improved during finalization. All 41 original scripts are retained, plus the release audit and script 44 (43 Python files total). Local caches, review outputs and the safety checkpoint are excluded from publication.
 
 | File/path | Type | State | Decision | Reason |
 |---|---|---|---|---|

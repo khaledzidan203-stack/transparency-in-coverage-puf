@@ -8,4 +8,4 @@ Availability statuses distinguish numeric availability, unavailable data, small-
 
 The 161 resubmissions-greater-than-denied observations are diagnostics. The source records events and does not establish one resubmission per denied claim. Report intensity as events per 100 denied claims.
 
-The DQ register intentionally has no physical semantic-model relationships. Context is applied by measures. The known page-10 scope-chart issue is described in [known limitations](KNOWN_LIMITATIONS.md); the raw register remains inspectable and unchanged.
+The DQ register intentionally has no physical semantic-model relationships. Context is applied by measures. The previous page-10 scope-chart issue is resolved: `KEEPFILTERS` intersects the existing Scope context instead of replacing it. The corrected screenshot shows ISSUER=5, PLAN=33 and Total=38. The raw register remains inspectable and unchanged.

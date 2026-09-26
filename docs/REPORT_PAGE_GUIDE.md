@@ -14,6 +14,6 @@ The saved PBIR and supplied screenshots define the release appearance. INDEX nav
 | 07 Enrollment | Assess reported monthly enrollment, disenrollment and availability. | [View](../screenshots/07%20Enrollment.png) |
 | 08 Issuer & State Explorer | Explore state and issuer patterns with contextual filters. | [View](../screenshots/08%20Issuer%20%26%20State%20Explorer.png) |
 | 09 Data Availability | Compare metric availability, suppression and structural applicability. | [View](../screenshots/09%20Data%20Availability.png) |
-| 10 Data Quality & Methodology | Inspect exception rules, the register and methodology. See the known scope-chart limitation. | [View](../screenshots/10%20Data%20Quality%20%26%20Methodology.png) |
+| 10 Data Quality & Methodology | Inspect exception rules, the register and methodology. Scope breakdown validated: ISSUER=5, PLAN=33, Total=38. | [View](../screenshots/10%20Data%20Quality%20%26%20Methodology.png) |
 
-All 11 images are included and unaltered. [Known limitations](KNOWN_LIMITATIONS.md) records the page-10 discrepancy.
+All 11 images are included. Page 10 uses the supplied corrected screenshot; the other ten images are unchanged. The previous scope-chart issue is resolved.

@@ -21,6 +21,7 @@ Start with the [portfolio README](README.md), then the [implemented architecture
 | Interpretation | [analytical story](docs/ANALYTICAL_STORY.md), [DQ governance](docs/DATA_QUALITY_GOVERNANCE.md) |
 | Validation evidence | [framework](docs/VALIDATION_FRAMEWORK.md), [summary](docs/VALIDATION_EVIDENCE.md) |
 | Release review | [checklist](docs/GITHUB_RELEASE_CHECKLIST.md), [security](docs/SECURITY_AND_REDACTION.md), [limitations](docs/KNOWN_LIMITATIONS.md) |
+| Approved DQ correction | [44_fix_dq_scope_filter_context.py](src/validation/44_fix_dq_scope_filter_context.py), historical mutating patch; already applied, do not rerun |
 | Historical engineering | [complete script catalog](docs/REPOSITORY_INVENTORY.md); retained in place, not a normal pipeline |
 
 No physical archive was created: keeping numbered dependencies in place avoids breaking historical audits. All original validation and engineering scripts remain available. Empty `sql/` and `tests/` directories are not advertised as implemented components.

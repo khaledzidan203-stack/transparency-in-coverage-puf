@@ -1,24 +1,26 @@
 # Validation evidence summary
 
-Release inspection date: 2026-09-26. Historical workbook summaries below were read from existing local evidence, not rerun. Temporary Excel files remain outside Git. SHA-256 identifies the inspected evidence without exposing local paths.
+## Fresh runtime DAX reconciliation
 
-## Historical runtime DAX evidence
+The fresh post-fix workbook `.local-review/09_DAX_RUNTIME_RECONCILIATION.xlsx` was inspected read-only for the final public-release update on 2026-09-26. All detail rows in the four reconciliation sheets have PASS status. The workbook remains ignored and is not committed. The runtime run was already completed before this documentation update; it was not executed again here.
 
-Workbook: `09_DAX_RUNTIME_RECONCILIATION.xlsx`
+SHA-256: `5beaef1fe85d47fbbc0d133f736a983d3eac06fd8f92f9a7830b0e3d3b1b6ee7`
 
-SHA-256: `27b79cd6ac55ed352182f5ba6e5239e0e48f4bbdc759ab1e2d13ed88e9a2ff98`
+| Summary item | Result |
+|---|---:|
+| Validation status | PASS |
+| Core measure checks | 32 |
+| Reason checks | 10 |
+| Availability checks | 18 |
+| DQ context checks | 3 |
+| Total failures | 0 |
 
-| Summary item | Recorded result |
-|---|---|
-| ValidationStatus | PASS |
-| CoreMeasureChecks | 32 |
-| ReasonChecks | 10 |
-| AvailabilityChecks | 18 |
-| DQContextChecks | 3 |
-| TotalFailures | 0 |
+Power BI and project source were read-only during runtime reconciliation, as reported for the completed run.
 
-These are historical runtime results. No fresh runtime DAX execution was performed during finalization. Later visual filter behavior is not certified by this workbook. See [known limitations](KNOWN_LIMITATIONS.md).
+## Page 10
 
-## Fresh release checks
+PASS: the supplied corrected screenshot displays ISSUER=5, PLAN=33 and Total=38. Static comparison with the previous commit confirms that the only DAX changes are the two `KEEPFILTERS` wrappers inside `Current Context DQ Exception Count`. No other measure changed. The previous issue is resolved.
 
-See [release checklist](GITHUB_RELEASE_CHECKLIST.md) for the newly executed KPI, semantic-model, PBIR, compilation, link, security and preservation checks. The pre-DAX validator initially failed two stale expectations (no measures table and zero measures); only the validator expectations were updated to the saved release inventory.
+## Final repository checks
+
+See [release checklist](GITHUB_RELEASE_CHECKLIST.md) for compilation, structural validation, link, security and preservation results. Script 44 is retained as a historical targeted semantic-model patch and was not executed during this update.

@@ -6,6 +6,7 @@ Run from any working directory. Exit 1 means a release gate failed.
 from pathlib import Path
 from urllib.parse import unquote
 import hashlib
+import argparse
 import json
 import py_compile
 import re
@@ -18,6 +19,9 @@ SOURCE_HASH = "27379dc76590027b0e6d21d736331f87376f0ac87810d68e9f7cca555eef4b1f"
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--baseline", type=Path, help="Explicit reviewed SHA-256 manifest; defaults to tracked protected files in HEAD")
+    args = parser.parse_args()
     evidence = ROOT / ".local-review"
     evidence.mkdir(exist_ok=True)
     failures = []
@@ -138,14 +142,20 @@ def main() -> int:
     check(not findings, "Security scan has unresolved findings (see local JSON)")
     source = ROOT / "data/raw/Transparency_in_Coverage_PUF.xlsx"
     check(source.is_file() and hashlib.sha256(source.read_bytes()).hexdigest() == SOURCE_HASH, "Raw source hash mismatch")
-    baseline_path = ROOT / ".local-release/baseline.json"
-    preservation = "NOT_RUN: local pre-release checkpoint is not part of a clone"
-    if baseline_path.exists():
-        baseline = json.loads(baseline_path.read_text())
-        protected = [name for name in baseline if name.startswith(("powerbi/", "data/", "screenshots/"))]
-        changed = [name for name in protected if not (ROOT / name).exists() or hashlib.sha256((ROOT / name).read_bytes()).hexdigest() != baseline[name]]
-        check(not changed, "Protected file hash changed")
-        preservation = {"checked": len(protected), "changed": changed}
+    if args.baseline:
+        baseline = json.loads(args.baseline.read_text())
+    else:
+        tracked = subprocess.check_output(["git", "ls-tree", "-r", "--name-only", "-z", "HEAD"], cwd=ROOT)
+        names = [name.decode("utf-8") for name in tracked.split(b"\0") if name]
+        baseline = {
+            name: hashlib.sha256(subprocess.check_output(["git", "show", "HEAD:" + name], cwd=ROOT)).hexdigest()
+            for name in names if name.startswith(("powerbi/", "data/", "screenshots/"))
+        }
+    protected = [name for name in baseline if name.startswith(("powerbi/", "data/", "screenshots/"))]
+    check(bool(protected), "Empty preservation baseline")
+    changed = [name for name in protected if not (ROOT / name).exists() or hashlib.sha256((ROOT / name).read_bytes()).hexdigest() != baseline[name]]
+    check(not changed, "Protected file hash changed")
+    preservation = {"baseline": "explicit manifest" if args.baseline else "HEAD", "checked": len(protected), "changed": changed}
     summary = {
         "status": "PASS" if not failures else "FAIL", "failures": failures,
         "publication_files": len(paths), "publication_bytes": sum(p.stat().st_size for p in paths),
