@@ -10,4 +10,4 @@
 - Preserved data-quality controls and historical runtime DAX reconciliation evidence; reran safe KPI/model/PBIR checks.
 - Excluded local caches, temporary evidence, backup archives and a byte-identical root workbook from publication.
 - Documented the existing page-10 scope-chart discrepancy as an unresolved public-release review item.
-- Prepared private GitHub publication without installing dependencies or creating a software license.
+- Published to a private GitHub repository on main, with ten relevant topics, without installing dependencies or creating a software license.

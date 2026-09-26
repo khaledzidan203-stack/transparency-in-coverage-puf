@@ -26,10 +26,12 @@ Audit date: 2026-09-26. Scope: private repository publication of the saved proje
 | Fresh live runtime DAX reconciliation | NOT RUN | Desktop/live model and DAX Studio CLI prerequisites unavailable; historical workbook records PASS, zero failures |
 | Page-10 scope breakdown | FAIL — existing visual issue | Screenshot shows 38 for each scope; canonical register has ISSUER 5 / PLAN 33. Preserved and disclosed, not repaired under this task |
 | Software license | NOT ADDED | No existing or unambiguous project license; source-data terms do not license project code |
-| Private GitHub push | Pending | Verify remote branch matches local HEAD after publication |
+| Private GitHub push | PASS | Initial main push succeeded; GitHub API and local HEAD both resolved to 76aadf3c081b8704d7892d43d906808905c6ab63; visibility PRIVATE and main default branch verified |
 
 No analytical logic, DAX, Power Query, semantic relationships, report colors or visual geometry changed. No package, CLI, dependency or Git LFS component was installed. No PBIR builder or model patcher was executed.
 
 ## Before making public
 
 Review the page-10 discrepancy in Power BI and decide on a separately authorized correction and screenshot refresh. Repeat runtime reconciliation in the configured live environment before claiming fresh runtime coverage. Choose software licensing if reuse is intended. See [known limitations](KNOWN_LIMITATIONS.md).
+
+Repository: [transparency-in-coverage-puf](https://github.com/khaledzidan203-stack/transparency-in-coverage-puf). Ten relevant topics are configured. The follow-up documentation commit records this verified publication result; GitHub history provides the current commit identity.
