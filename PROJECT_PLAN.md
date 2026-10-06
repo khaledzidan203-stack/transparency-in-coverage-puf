@@ -1,9 +1,36 @@
 # Project status and next steps
 
-Release preparation: 2026-09-26.
+Current portfolio-hardening status: 2026-10-06.
 
-Completed analytical work includes discovery, the canonical transformation, governed KPI validation, EDA, the saved semantic model, fresh passing runtime DAX reconciliation and an 11-page Power BI report with all page screenshots. Repository finalization adds documentation, script classification, portable evidence paths, publication hygiene and repeatable release checks.
+The validated analytical core is complete and preserved: source discovery, canonical transformation, governed KPI validation, EDA, the saved semantic model, runtime DAX reconciliation, and the 11-page Power BI report with final screenshots.
 
-Canonical data, contracts, other DAX, Power Query, relationships and report geometry are preserved. The approved DQ filter-context correction and supplied page-10 screenshot complete the public-release update. Check [release gates](docs/GITHUB_RELEASE_CHECKLIST.md) for measured outcomes rather than inferring validation from project status.
+## Completed hardening
 
-Page 10 and fresh runtime DAX reconciliation pass. The final commit is intended for verified push followed by public visibility. Software licensing remains undecided if broad code reuse is intended. Further data years or analytical changes require separate contract and validation work.
+- Reconciled implemented semantic-model topology with historical design documentation through an explicit implementation amendment.
+- Audited saved DAX against the KPI contract and documented semantic-drift observations without mutating the validated model.
+- Added a safe validation runbook that clearly separates read-only validators from historical mutating builders and patches.
+- Added `requirements.txt` for reproducible Python dependency installation.
+- Added GitHub Actions static validation and a protected-path gate for validated data, Power BI source, and report screenshots.
+- Reorganized the README around engineering scope, governed analytical behavior, validation evidence, and safe reproduction.
+- Added a technical walkthrough and updated project navigation.
+
+## Preserved core
+
+No portfolio-hardening change intentionally alters:
+
+- canonical analytical data;
+- transformation logic;
+- saved DAX measures;
+- TMDL model source;
+- PBIR report source;
+- Power Query logic;
+- report screenshots;
+- validated analytical results.
+
+## Remaining optional work
+
+1. Replace or approve the presentation hero only after its text and metrics are checked against the governed project evidence.
+2. Add a software license only if a deliberate reuse policy is chosen.
+3. Treat any future PUF year, KPI change, DAX change, or relationship change as a new analytical release requiring contract and validation work.
+
+Measured release outcomes remain governed by the [validation framework](docs/VALIDATION_FRAMEWORK.md), [validation evidence](docs/VALIDATION_EVIDENCE.md), and [release checklist](docs/GITHUB_RELEASE_CHECKLIST.md).
