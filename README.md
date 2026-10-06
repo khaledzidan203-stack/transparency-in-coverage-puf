@@ -4,10 +4,6 @@
 
 A governed analytics engineering and Power BI project built on the **CMS Transparency in Coverage Public Use File (PY2026 / experience year 2024)**. The implementation separates issuer and plan grains, preserves disclosure availability semantics, applies explicit KPI contracts, and reconciles the saved Power BI semantic model against governed Python baselines.
 
-![CMS Transparency in Coverage PUF analytical overview](docs/assets/CMS%20Transparency%20in%20Coverage%20Data%20Dashboard.png)
-
-> **Presentation note:** the image above is a visual summary for documentation. Governed analytical values, model structure and validation status remain defined by the canonical data, contracts, Power BI source and validation evidence in this repository.
-
 > **Scope boundary:** this is insurer/plan-level public-use data. It contains no patient-level data and does not establish insurer quality, wrongful denial, fraud, causality, or complete-market estimates where source availability is incomplete.
 
 ## Project at a glance
