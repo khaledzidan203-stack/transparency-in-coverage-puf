@@ -1,5 +1,7 @@
 # Implemented project architecture
 
+> **Governance note:** the saved PBIP/TMDL is authoritative for the current physical relationship topology. The [implementation contract amendment](IMPLEMENTATION_CONTRACT_AMENDMENT.md) reconciles the current model with earlier conceptual relationship sketches in the original contracts.
+
 The saved PBIP, not historical builders, defines the release. [POWER_BI_ARCHITECTURE](POWER_BI_ARCHITECTURE.md) records the original design specification; this document describes the implemented model.
 
 The raw workbook feeds discovery and transformation, producing 11 canonical CSVs. Power Query imports them through `fxLoadCanonicalCsv` using the existing `DataFolderPath` parameter. The report is stored as PBIR and the semantic model as TMDL. There is no implemented SQL serving layer.
