@@ -2,6 +2,10 @@
 
 This directory contains visual summary assets used by the repository documentation.
 
-These files are presentation-only and are not analytical evidence, validation evidence, source data, Power BI report source, or part of the canonical model.
+| File | Purpose | Evidence status |
+|---|---|---|
+| `CMS Transparency in Coverage Data Dashboard.png` | Main README hero summarizing the project scope and analytical workflow | Presentation-only; not analytical or validation evidence |
 
-Validated analytical values remain governed by the project contracts, canonical data, semantic model, screenshots and validation evidence.
+These files are not source data, canonical data, Power BI report source, or validation evidence.
+
+Governed values and implementation claims remain defined by the project contracts, canonical datasets, PBIP/PBIR/TMDL source, report screenshots, and validation evidence.
