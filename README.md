@@ -2,9 +2,13 @@
 
 [![Portfolio Validation](https://github.com/khaledzidan203-stack/transparency-in-coverage-puf/actions/workflows/portfolio-validation.yml/badge.svg)](https://github.com/khaledzidan203-stack/transparency-in-coverage-puf/actions/workflows/portfolio-validation.yml)
 
-A governed analytics engineering and Power BI project built on the **CMS Transparency in Coverage Public Use File (PY2026 / experience year 2024)**. The implementation separates issuer and plan grains, preserves disclosure availability semantics, applies explicit KPI contracts, and reconciles the saved Power BI semantic model against governed Python baselines.
+A governed analytics engineering and Power BI implementation built on the **CMS Transparency in Coverage Public Use File (PY2026 / experience year 2024)**. The project separates issuer and plan grains, models disclosure availability explicitly, applies governed KPI definitions, preserves source anomalies, and reconciles the saved Power BI semantic model against independent Python baselines.
 
-> **Scope boundary:** this is insurer/plan-level public-use data. It contains no patient-level data and does not establish insurer quality, wrongful denial, fraud, causality, or complete-market estimates where source availability is incomplete.
+> **Scope boundary:** insurer/plan-level public-use data only. The dataset contains no patient-level data, and the project does not infer insurer quality, wrongful denial, fraud, causality, or complete-market results where source availability is incomplete.
+
+![Project overview](docs/assets/cms-tic-puf-overview.svg)
+
+**Start here:** [Case study](docs/CASE_STUDY.md) · [Technical walkthrough](docs/TECHNICAL_WALKTHROUGH.md) · [Evidence map](docs/PROJECT_EVIDENCE_MAP.md) · [Validation evidence](docs/VALIDATION_EVIDENCE.md) · [Project index](PROJECT_INDEX.md)
 
 ## Project at a glance
 
@@ -16,26 +20,73 @@ A governed analytics engineering and Power BI project built on the **CMS Transpa
 | Analytical grains | Issuer: year × state × issuer · Plan: year × plan |
 | Availability model | Explicit availability facts for 12 issuer metrics and 18 plan metrics |
 | Semantic model | 43 saved DAX measures · 14 active single-direction relationships |
-| Power BI | 11 PBIR pages with 371 saved visuals |
-| Data quality | 36 `OPEN_REVIEW` rows + 2 preserved known-source rows |
+| Power BI | 11 PBIR pages · 371 saved visuals |
+| Data quality | 36 `OPEN_REVIEW` rows · 2 preserved known-source rows |
 | Runtime validation | 63 DAX reconciliation checks · 0 failures |
-| CI | GitHub Actions static publication and protected-path quality gate |
+| CI | GitHub Actions static release audit + protected-path quality gate |
 
-[Technical walkthrough](docs/TECHNICAL_WALKTHROUGH.md) · [Project index](PROJECT_INDEX.md) · [Validation evidence](docs/VALIDATION_EVIDENCE.md)
+## What makes the implementation robust
 
-## Engineering scope
+The project is built around five controls that are easy to verify in the repository:
 
-The project implements a governed path from public CMS source data to analytical delivery:
+1. **Grain before aggregation** — issuer and plan facts stay separate, preventing duplicated issuer totals across plan rows.
+2. **Availability as data** — suppressed, unavailable and structurally non-applicable values are modeled independently of numeric values.
+3. **Governed KPI semantics** — rates use ratio-of-totals over controlled eligible populations rather than blindly averaging row percentages.
+4. **Preserve, flag and disclose** — unusual source values remain visible and governed instead of being silently clipped or imputed.
+5. **Evidence-backed delivery** — source, canonical data, semantic model, DAX, PBIR structure and runtime behavior are validated through separate controls.
 
-- immutable, hash-pinned RAW source;
-- Python source discovery and canonical transformation;
-- separate issuer and plan fact grains to prevent double counting;
-- first-class availability modeling for suppression, non-availability and structural non-applicability;
-- explicit data, KPI and interpretation contracts;
-- preserved DQ exceptions rather than silent clipping or imputation;
-- source-controlled Power BI PBIP / PBIR / TMDL artifacts;
-- independent Python and runtime DAX reconciliation;
-- release auditing, secret/path scanning and GitHub Actions validation.
+The [project evidence map](docs/PROJECT_EVIDENCE_MAP.md) connects each major public claim to its authoritative source or validation artifact.
+
+## End-to-end implementation
+
+```mermaid
+flowchart LR
+    A[CMS source workbook] --> B[Python discovery]
+    B --> C[Canonical transformation]
+    C --> I[Issuer grain]
+    C --> P[Plan grain]
+    C --> AV[Availability facts]
+    I --> S[Power BI semantic model]
+    P --> S
+    AV --> S
+    S --> D[Governed DAX]
+    D --> R[PBIR analytical report]
+    C --> V[Python validation]
+    S --> V
+    R --> V
+    V --> CI[GitHub Actions quality gate]
+```
+
+### 1. Source integrity
+
+The CMS workbook is preserved as the governed source and hash-pinned before transformation. Data provenance and redistribution boundaries are documented in [`data/README.md`](data/README.md).
+
+### 2. Canonical transformation
+
+Python performs source discovery, cleaning, standardization and business-rule transformation into **11 governed canonical CSV tables**. The canonical layer is intentionally small and inspectable; SQL Server is not added simply to increase stack complexity.
+
+### 3. Grain and availability model
+
+The business grains are explicit:
+
+- `FactIssuerTransparency` — Experience Year × State × Issuer;
+- `FactPlanTransparency` — Experience Year × Plan.
+
+The two grains are never summed together. Availability is retained separately through `FactIssuerMetricAvailability` and `FactPlanMetricAvailability`, so disclosure state is not inferred from numeric values.
+
+### 4. Semantic model
+
+The source-controlled Power BI model uses PBIP/TMDL and contains six dimensions, separate issuer/plan facts, separate availability facts, an intentionally disconnected `DQExceptionRegister`, **43 saved DAX measures**, and **14 active single-direction relationships**.
+
+The saved TMDL is authoritative for current physical topology. Earlier conceptual relationship sketches remain design history and are reconciled in the [implementation contract amendment](docs/IMPLEMENTATION_CONTRACT_AMENDMENT.md).
+
+### 5. Analytical report
+
+The PBIR report contains **11 pages and 371 saved visuals**, moving from scope and network comparisons through denials, denial reasons, appeals, resubmissions, enrollment, issuer/state exploration, data availability and data quality methodology.
+
+### 6. Validation and CI
+
+Validation is layered rather than represented by one generic pass/fail flag. Python KPI checks, semantic-model checks, PBIR structure checks, runtime DAX reconciliation and repository release auditing are kept separate. GitHub Actions then runs the static release audit and protects reviewed analytical artifacts from accidental change.
 
 ## Business and analytical questions
 
@@ -50,42 +101,6 @@ The governed model supports descriptive analysis of:
 - metric availability, suppression and structural applicability;
 - source exceptions that materially affect interpretation.
 
-## Architecture
-
-```mermaid
-flowchart LR
-    A[CMS raw workbook] --> B[Python discovery]
-    B --> C[Canonical transformation]
-    C --> I[Issuer grain]
-    C --> P[Plan grain]
-    C --> AV[Availability facts]
-    I --> S[Governed semantic model]
-    P --> S
-    AV --> S
-    S --> D[DAX measures]
-    D --> R[Power BI PBIR report]
-    C --> V[Python validation]
-    S --> V
-    R --> V
-    V --> CI[GitHub Actions quality gate]
-```
-
-The saved implementation uses `DimState → DimIssuer → DimPlan` filtering paths where appropriate and 14 active single-direction relationships. The current saved TMDL is authoritative for implemented topology. The original design contract remains historical design intent and is reconciled through the [implementation contract amendment](docs/IMPLEMENTATION_CONTRACT_AMENDMENT.md).
-
-## Governed data model
-
-Six dimensions describe reporting period, state, issuer, plan, metric and availability status. Two analytical fact tables remain separate by grain:
-
-- `FactIssuerTransparency` — 348 issuer-grain rows;
-- `FactPlanTransparency` — 4,956 plan-grain rows.
-
-Two availability facts preserve source disclosure meaning independently of the numeric facts:
-
-- `FactIssuerMetricAvailability` — 4,176 rows;
-- `FactPlanMetricAvailability` — 89,208 rows.
-
-`DQExceptionRegister` is intentionally disconnected from the physical relationship graph; entity context is applied through explicit DAX. See the [data contract](docs/DATA_CONTRACT.md), [data dictionary](docs/DATA_DICTIONARY.md), and [implemented architecture](docs/ARCHITECTURE.md).
-
 ## KPI governance
 
 Rates use a **ratio of totals over the same eligible population**. Availability-aware calculations distinguish:
@@ -96,7 +111,7 @@ Numeric zero remains a valid numeric value and is never treated as suppression o
 
 Issuer and plan facts are never summed together. Row-level percentages are not blindly averaged. Resubmissions are modeled as **events per 100 denied claims** and may exceed 100 because the source does not establish a one-resubmission-per-denied-claim constraint.
 
-The original KPI contract and the saved DAX implementation were also reviewed explicitly for semantic drift; documented observations are retained in the [DAX/KPI contract audit](docs/DAX_KPI_CONTRACT_AUDIT.md).
+The written KPI contract and saved DAX implementation were reviewed explicitly for semantic drift. Current validated DAX remains preserved; documented hardening candidates are retained in the [DAX/KPI contract audit](docs/DAX_KPI_CONTRACT_AUDIT.md) instead of being silently patched.
 
 ## Data quality governance
 
@@ -125,11 +140,9 @@ These are descriptive results for governed eligible populations. They are not pe
 
 ![Report navigation and analytical story](screenshots/00%20INDEX.png)
 
-The saved PBIP/PBIR release contains 11 pages and 371 visuals. Manual layout refinements are preserved in source control.
-
 <table>
 <tr><td><img src="screenshots/02%20Network%20Comparison.png" alt="Network comparison" width="440"></td><td><img src="screenshots/09%20Data%20Availability.png" alt="Data availability" width="440"></td></tr>
-<tr><td>Network comparisons and eligible populations</td><td>Availability, suppression and applicability</td></tr>
+<tr><td>Network comparisons and governed eligible populations</td><td>Availability, suppression and structural applicability</td></tr>
 </table>
 
 | Page | Purpose |
@@ -150,8 +163,6 @@ The saved PBIP/PBIR release contains 11 pages and 371 visuals. Manual layout ref
 
 ## Validation and release controls
 
-Validation separates source/data integrity, KPI logic, semantic-model structure, runtime DAX behavior and PBIR structure.
-
 Validated release evidence includes:
 
 - 32/32 core KPI acceptance checks;
@@ -164,7 +175,7 @@ Validated release evidence includes:
 - secret, personal-path and publication-file scanning;
 - GitHub Actions protected-path and static release auditing.
 
-Fresh runtime DAX reconciliation recorded **63 checks with zero failures**. The GitHub-hosted CI is intentionally static/read-only with respect to validated analytical and Power BI artifacts. See [validation framework](docs/VALIDATION_FRAMEWORK.md), [validation evidence](docs/VALIDATION_EVIDENCE.md), and [release checklist](docs/GITHUB_RELEASE_CHECKLIST.md).
+Recorded runtime DAX reconciliation contains **63 checks with zero failures**. The GitHub-hosted CI is intentionally static/read-only with respect to reviewed analytical and Power BI artifacts. See the [validation framework](docs/VALIDATION_FRAMEWORK.md), [validation evidence](docs/VALIDATION_EVIDENCE.md), and [release checklist](docs/GITHUB_RELEASE_CHECKLIST.md).
 
 ## Safe reproduction
 
@@ -209,7 +220,7 @@ Open [`powerbi/TransparencyInCoverage.pbip`](powerbi/TransparencyInCoverage.pbip
 transparency-in-coverage-puf/
 ├── .github/workflows/       # static CI quality gate
 ├── data/                    # raw CMS source + 11 governed canonical CSVs
-├── docs/                    # contracts, architecture, governance and validation
+├── docs/                    # contracts, architecture, case study and validation
 ├── powerbi/                 # PBIP, PBIR report and TMDL semantic model
 ├── screenshots/             # 11 final report-page images
 ├── src/
@@ -226,7 +237,7 @@ transparency-in-coverage-puf/
 
 Python 3.13 · pandas · NumPy · openpyxl · Power BI · DAX · Power Query · PBIP · PBIR · TMDL · DAX Studio · Git · GitHub Actions
 
-SQL Server is intentionally not part of the current serving architecture; the governed canonical dataset is small and already materialized, so adding SQL would introduce another layer without a present analytical or operational need.
+SQL Server is intentionally not part of the current serving architecture; the governed canonical dataset is small and already materialized, so adding another serving layer would not improve the current analytical or operational requirement.
 
 ## Important limitations
 
