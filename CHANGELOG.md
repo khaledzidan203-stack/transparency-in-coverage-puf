@@ -1,5 +1,15 @@
 # Changelog
 
+## Portfolio hardening update - 2026-10-06
+
+- Added an implementation contract amendment so documentation reflects the saved TMDL relationship topology without mutating the semantic model.
+- Added a DAX-to-KPI contract audit documenting semantic-drift observations while preserving the validated DAX source.
+- Added `requirements.txt` and a safe validation runbook that separates read-only validation from historical mutating engineering scripts.
+- Added GitHub Actions static validation and protected-path checks for canonical data, Power BI source, and report screenshots.
+- Reorganized the README around engineering scope, governed analytical behavior, validation evidence, and safe reproduction.
+- Added a technical walkthrough and refreshed project navigation/status documentation.
+- Preserved canonical data, transformation logic, DAX, TMDL, PBIR, Power Query, screenshots, and validated analytical results.
+
 ## Final public-release update - 2026-09-26
 
 - Included the approved KEEPFILTERS correction in Current Context DQ Exception Count; no other DAX or analytical logic changed.
