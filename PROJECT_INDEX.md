@@ -1,9 +1,11 @@
 # Project index
 
-Start with the [portfolio README](README.md), then the [implemented architecture](docs/ARCHITECTURE.md).
+Start with the [project README](README.md), then use the [case study](docs/CASE_STUDY.md) for the end-to-end story and the [evidence map](docs/PROJECT_EVIDENCE_MAP.md) to verify major claims.
 
 | Area | Entry point |
 |---|---|
+| Project overview | [README](README.md), [case study](docs/CASE_STUDY.md), [technical walkthrough](docs/TECHNICAL_WALKTHROUGH.md) |
+| Claim-to-evidence traceability | [project evidence map](docs/PROJECT_EVIDENCE_MAP.md) |
 | Immutable source | [data/raw](data/raw/) and [provenance policy](data/README.md) |
 | Canonical datasets | [11 CSV tables](data/canonical/), [dictionary](docs/DATA_DICTIONARY.md) |
 | Discovery | [01_workbook_inventory.py](src/discovery/01_workbook_inventory.py) |
@@ -26,6 +28,7 @@ Start with the [portfolio README](README.md), then the [implemented architecture
 | Release review | [checklist](docs/GITHUB_RELEASE_CHECKLIST.md), [security](docs/SECURITY_AND_REDACTION.md), [limitations](docs/KNOWN_LIMITATIONS.md) |
 | Python environment | [requirements](requirements.txt), [recorded baseline](docs/ENVIRONMENT_BASELINE.txt) |
 | CI gate | [.github/workflows/portfolio-validation.yml](.github/workflows/portfolio-validation.yml) |
+| Presentation overview | [evidence-aligned SVG](docs/assets/cms-tic-puf-overview.svg), [asset policy](docs/assets/README.md) |
 | Approved DQ correction | [44_fix_dq_scope_filter_context.py](src/validation/44_fix_dq_scope_filter_context.py), historical mutating patch; already applied, do not rerun |
 | Historical engineering | [complete script catalog](docs/REPOSITORY_INVENTORY.md); retained in place, not a normal pipeline |
 
