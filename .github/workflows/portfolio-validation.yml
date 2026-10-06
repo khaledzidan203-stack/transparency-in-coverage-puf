@@ -1,0 +1,38 @@
+name: Portfolio Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Static portfolio quality gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Protect validated data, Power BI and screenshots
+        shell: bash
+        run: |
+          BASELINE=9e95b28b8aaaf449145ce12065b1801ed4a4a772
+          git cat-file -e "$BASELINE^{commit}"
+          git diff --exit-code "$BASELINE" HEAD -- data powerbi screenshots
+
+      - name: Run release audit
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python src/validation/release_audit.py
