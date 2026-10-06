@@ -1,0 +1,6 @@
+# Reproducible analytical environment recorded for the current release.
+pandas==3.0.5
+numpy==2.5.2
+openpyxl==3.1.5
+
+# Optional runtime tooling such as DAX Studio is installed separately and is not a Python dependency.
