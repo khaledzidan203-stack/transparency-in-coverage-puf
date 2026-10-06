@@ -1,74 +1,116 @@
-# Transparency in Coverage PUF Analytics
+# CMS Transparency in Coverage PUF Analytics
 
-An end-to-end Python and Power BI analysis of the CMS Transparency in Coverage Public Use File. The project separates issuer and plan facts, governs metric availability, and reconciles reported KPIs while preserving source anomalies.
+[![Portfolio Validation](https://github.com/khaledzidan203-stack/transparency-in-coverage-puf/actions/workflows/portfolio-validation.yml/badge.svg)](https://github.com/khaledzidan203-stack/transparency-in-coverage-puf/actions/workflows/portfolio-validation.yml)
 
-![Report navigation and analytical story](screenshots/00%20INDEX.png)
+A governed analytics engineering and Power BI project built on the **CMS Transparency in Coverage Public Use File (PY2026 / experience year 2024)**. The implementation separates issuer and plan grains, preserves disclosure availability semantics, applies explicit KPI contracts, and reconciles the saved Power BI semantic model against governed Python baselines.
 
-## Project overview
+> **Scope boundary:** this is insurer/plan-level public-use data. It contains no patient-level data and does not establish insurer quality, wrongful denial, fraud, causality, or complete-market estimates where source availability is incomplete.
 
-This insurer/plan-level public-use dataset contains no patient-level data. The report covers claims denials, denial reasons, appeals, resubmissions, enrollment, metric availability, and data quality. Results describe reported activity and eligible populations, not insurer quality or causal effects.
+## Project at a glance
 
-**Release validation:** all 11 screenshots are included. Page 10 passes with ISSUER=5, PLAN=33 and Total=38 after the approved `KEEPFILTERS` correction. Fresh runtime DAX reconciliation passes all 63 checks with zero failures. [Validation evidence](docs/VALIDATION_EVIDENCE.md)
+| Area | Implemented state |
+|---|---|
+| Source | CMS Transparency in Coverage PUF — PY2026 / experience 2024 |
+| Scope | 4,956 plans · 348 issuers · 30 states |
+| Canonical layer | 11 governed CSV tables derived from the hash-pinned CMS workbook |
+| Analytical grains | Issuer: year × state × issuer · Plan: year × plan |
+| Availability model | Explicit availability facts for 12 issuer metrics and 18 plan metrics |
+| Semantic model | 43 saved DAX measures · 14 active single-direction relationships |
+| Power BI | 11 PBIR pages with 371 saved visuals |
+| Data quality | 36 `OPEN_REVIEW` rows + 2 preserved known-source rows |
+| Runtime validation | 63 DAX reconciliation checks · 0 failures |
+| CI | GitHub Actions static publication and protected-path quality gate |
 
-## Business questions
+[Technical walkthrough](docs/TECHNICAL_WALKTHROUGH.md) · [Project index](PROJECT_INDEX.md) · [Validation evidence](docs/VALIDATION_EVIDENCE.md)
 
-- How do in-network and out-of-network denial ratios differ?
-- Where are reported claims and denials concentrated?
-- Which reasons contribute to the reported denial-reason mix?
-- What activity follows denial through appeals and resubmissions?
-- How does availability constrain comparisons?
-- Which source exceptions affect interpretation?
+## Engineering scope
 
-## Dataset scope
+The project implements a governed path from public CMS source data to analytical delivery:
 
-| Scope | Validated value |
-|---|---:|
-| PUF publication year | 2026 |
-| Experience year | 2024 |
-| Source plan rows / distinct Plan_ID | 4,956 / 4,956 |
-| Issuers | 348 |
-| States | 30 |
+- immutable, hash-pinned RAW source;
+- Python source discovery and canonical transformation;
+- separate issuer and plan fact grains to prevent double counting;
+- first-class availability modeling for suppression, non-availability and structural non-applicability;
+- explicit data, KPI and interpretation contracts;
+- preserved DQ exceptions rather than silent clipping or imputation;
+- source-controlled Power BI PBIP / PBIR / TMDL artifacts;
+- independent Python and runtime DAX reconciliation;
+- release auditing, secret/path scanning and GitHub Actions validation.
 
-Source: [CMS Exchange Public Use Files](https://www.cms.gov/marketplace/resources/data/public-use-files), [PY2026 dataset](https://data.healthcare.gov/dataset/dfc1a61d-6e77-4c62-bee1-44422a42cf06). See [data provenance and redistribution policy](data/README.md). Canonical CSVs are this project's derived outputs, not unmodified CMS publications.
+## Business and analytical questions
+
+The governed model supports descriptive analysis of:
+
+- in-network versus out-of-network denial patterns;
+- reported claims and denial concentration;
+- denial-reason composition within fully comparable plan populations;
+- appeals and overturn ratios;
+- resubmission events per 100 denied claims;
+- reported enrollment and disenrollment relationships;
+- metric availability, suppression and structural applicability;
+- source exceptions that materially affect interpretation.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    A[CMS raw workbook] --> B[Python discovery and transformation]
-    B --> C[Canonical CSV model]
-    C --> I[Issuer grain: year, state, issuer]
-    C --> P[Plan grain: year, plan]
+    A[CMS raw workbook] --> B[Python discovery]
+    B --> C[Canonical transformation]
+    C --> I[Issuer grain]
+    C --> P[Plan grain]
+    C --> AV[Availability facts]
     I --> S[Governed semantic model]
     P --> S
+    AV --> S
     S --> D[DAX measures]
-    D --> R[Power BI PBIP report]
-    C --> V[Validation and reconciliation]
+    D --> R[Power BI PBIR report]
+    C --> V[Python validation]
     S --> V
     R --> V
+    V --> CI[GitHub Actions quality gate]
 ```
 
-## Data model
+The saved implementation uses `DimState → DimIssuer → DimPlan` filtering paths where appropriate and 14 active single-direction relationships. The current saved TMDL is authoritative for implemented topology. The original design contract remains historical design intent and is reconciled through the [implementation contract amendment](docs/IMPLEMENTATION_CONTRACT_AMENDMENT.md).
 
-Six dimensions describe reporting period, state, issuer, plan, metric, and availability status. `FactIssuerTransparency` and `FactPlanTransparency` hold separate analytical grains. `FactIssuerMetricAvailability` and `FactPlanMetricAvailability` retain disclosure statuses. `DQExceptionRegister` preserves exceptions and is intentionally disconnected; DAX applies entity context explicitly. A `_Measures` table organizes 43 saved measures.
+## Governed data model
 
-The saved model has 14 active, single-direction relationships, including State → Issuer → Plan filtering paths. See [implemented architecture](docs/ARCHITECTURE.md) and the original [data contract](docs/DATA_CONTRACT.md).
+Six dimensions describe reporting period, state, issuer, plan, metric and availability status. Two analytical fact tables remain separate by grain:
+
+- `FactIssuerTransparency` — 348 issuer-grain rows;
+- `FactPlanTransparency` — 4,956 plan-grain rows.
+
+Two availability facts preserve source disclosure meaning independently of the numeric facts:
+
+- `FactIssuerMetricAvailability` — 4,176 rows;
+- `FactPlanMetricAvailability` — 89,208 rows.
+
+`DQExceptionRegister` is intentionally disconnected from the physical relationship graph; entity context is applied through explicit DAX. See the [data contract](docs/DATA_CONTRACT.md), [data dictionary](docs/DATA_DICTIONARY.md), and [implemented architecture](docs/ARCHITECTURE.md).
 
 ## KPI governance
 
-Rates use a **ratio of totals** over the same eligible population. Availability-aware measures distinguish `AVAILABLE`, `NOT_AVAILABLE`, `SUPPRESSED_SMALL_CELL`, `NOT_REQUIRED_PLAN_TYPE`, `NOT_APPLICABLE_NEW_ENTITY`, and `MISSING_URL`. Numeric zero is not missing.
+Rates use a **ratio of totals over the same eligible population**. Availability-aware calculations distinguish:
 
-Comparable overall denial rates require both network components. Issuer and plan facts are never summed together, and row-level percentages are not blindly averaged. Resubmissions are events per 100 denied claims and can exceed 100. [KPI contract](docs/KPI_CONTRACT.md)
+`AVAILABLE` · `NOT_AVAILABLE` · `SUPPRESSED_SMALL_CELL` · `NOT_REQUIRED_PLAN_TYPE` · `NOT_APPLICABLE_NEW_ENTITY` · `MISSING_URL`
+
+Numeric zero remains a valid numeric value and is never treated as suppression or missingness.
+
+Issuer and plan facts are never summed together. Row-level percentages are not blindly averaged. Resubmissions are modeled as **events per 100 denied claims** and may exceed 100 because the source does not establish a one-resubmission-per-denied-claim constraint.
+
+The original KPI contract and the saved DAX implementation were also reviewed explicitly for semantic drift; documented observations are retained in the [DAX/KPI contract audit](docs/DAX_KPI_CONTRACT_AUDIT.md).
 
 ## Data quality governance
 
-The register contains **36 OPEN_REVIEW rows** and **2 known-source rows**. Suppression and structural non-applicability remain explicit. The 161 resubmissions-greater-than-denied observations are informational diagnostics, not automatic DQ failures.
+The governing policy is:
 
-For Delta Dental / issuer 97725, the source reports 1,203 internal appeals filed, 16,518 overturned, and 1,373.07%. The published math reconciles; the anomaly remains visible without clipping or imputation. [Governance details](docs/DATA_QUALITY_GOVERNANCE.md)
+**PRESERVE → CALCULATE → FLAG → DISCLOSE**
+
+The canonical register contains **36 open-review rows** and **2 known-source rows**. The 161 resubmissions-greater-than-denied observations are diagnostics, not automatic failures.
+
+A material preserved source anomaly is issuer `97725`, where CMS reports 1,203 internal appeals filed, 16,518 overturned and 1,373.07%. The published percentage reconciles mathematically to the reported numerator and denominator, so the anomaly remains visible rather than being clipped or corrected. See [data quality governance](docs/DATA_QUALITY_GOVERNANCE.md).
 
 ## Validated analytical highlights
 
-| Measure | Reported ratio |
+| Measure | Governed reported ratio |
 |---|---:|
 | Issuer in-network denial | ≈18.79% |
 | Issuer out-of-network denial | ≈37.16% |
@@ -77,11 +119,13 @@ For Delta Dental / issuer 97725, the source reports 1,203 internal appeals filed
 | Internal appeal overturn | ≈39.88% |
 | External appeal overturn | ≈17.45% |
 
-These descriptive figures use governed populations. They do not rank issuers or states as best or worst. [Analytical story](docs/ANALYTICAL_STORY.md)
+These are descriptive results for governed eligible populations. They are not performance rankings. Full interpretation boundaries and population restrictions are documented in the [analytical story](docs/ANALYTICAL_STORY.md).
 
-## Power BI report
+## Power BI analytical delivery
 
-The INDEX organizes the analytical journey. Report pages provide return navigation, contextual filters, magnitude-based colors and conditional formatting. Manual visual refinements are preserved in the source-controlled PBIP/PBIR files.
+![Report navigation and analytical story](screenshots/00%20INDEX.png)
+
+The saved PBIP/PBIR release contains 11 pages and 371 visuals. Manual layout refinements are preserved in source control.
 
 <table>
 <tr><td><img src="screenshots/02%20Network%20Comparison.png" alt="Network comparison" width="440"></td><td><img src="screenshots/09%20Data%20Availability.png" alt="Data availability" width="440"></td></tr>
@@ -94,57 +138,45 @@ The INDEX organizes the analytical journey. Report pages provide return navigati
 | 01 Executive Overview | Scope, claims exposure and governance context |
 | 02 Network Comparison | Compare in-network and out-of-network ratios |
 | 03 Denials | Examine volume, comparable rates and concentration |
-| 04 Denial Reasons | Explore the comparable reason-count mix |
+| 04 Denial Reasons | Explore the fully comparable reason-count mix |
 | 05 Appeals | Examine filed volume, overturn ratios and sensitivity |
 | 06 Resubmissions | Compare events per 100 denied claims |
-| 07 Enrollment | Interpret monthly enrollment and coverage |
-| 08 Issuer & State Explorer | Investigate filtered issuer/state patterns |
-| 09 Data Availability | Assess availability and structural applicability |
+| 07 Enrollment | Interpret monthly enrollment and availability |
+| 08 Issuer & State Explorer | Investigate contextual issuer/state patterns |
+| 09 Data Availability | Assess availability, suppression and applicability |
 | 10 Data Quality & Methodology | Inspect exceptions and interpretation rules |
 
-[All screenshots](screenshots/) · [Page guide](docs/REPORT_PAGE_GUIDE.md)
+[All screenshots](screenshots/) · [Report page guide](docs/REPORT_PAGE_GUIDE.md)
 
-## Validation strategy
+## Validation and release controls
 
-Source hashes, grain uniqueness, key integrity, availability semantics, relationship structure and KPI reconciliation are checked separately. Fresh runtime DAX reconciliation passed 32 core, 10 reason, 18 availability and 3 DQ context checks, with zero failures. PBIR parsing and reference checks validate the saved report without rebuilding it. Runtime evidence and final release checks are documented in the [validation framework](docs/VALIDATION_FRAMEWORK.md) and [release checklist](docs/GITHUB_RELEASE_CHECKLIST.md).
+Validation separates source/data integrity, KPI logic, semantic-model structure, runtime DAX behavior and PBIR structure.
 
-## Repository structure
+Validated release evidence includes:
 
-```text
-transparency-in-coverage-puf/
-├── README.md, CHANGELOG.md, PROJECT_INDEX.md, PROJECT_PLAN.md
-├── data/          # raw source and 11 canonical CSVs
-├── docs/          # contracts, architecture, governance, release evidence
-├── powerbi/       # PBIP, PBIR report and TMDL semantic model
-├── screenshots/   # all 11 final page images
-└── src/
-    ├── discovery/
-    ├── transformation/
-    ├── analysis/
-    └── validation/ # audits plus explicitly cataloged historical engineering
-```
+- 32/32 core KPI acceptance checks;
+- 10/10 denial-reason runtime checks;
+- 18/18 availability runtime checks;
+- 3/3 DQ-context runtime checks;
+- 29/29 semantic-model checks;
+- 11 report pages and 371 saved visuals;
+- source hash verification and canonical-grain controls;
+- secret, personal-path and publication-file scanning;
+- GitHub Actions protected-path and static release auditing.
 
-Historical builders remain in place because scripts reference one another. Consult the [script catalog](docs/REPOSITORY_INVENTORY.md) before executing anything in `src/validation`; the directory name alone does not imply read-only behavior.
+Fresh runtime DAX reconciliation recorded **63 checks with zero failures**. The GitHub-hosted CI is intentionally static/read-only with respect to validated analytical and Power BI artifacts. See [validation framework](docs/VALIDATION_FRAMEWORK.md), [validation evidence](docs/VALIDATION_EVIDENCE.md), and [release checklist](docs/GITHUB_RELEASE_CHECKLIST.md).
 
-## Reproducing the analytical pipeline
+## Safe reproduction
 
-Run from the repository root with an existing Python environment providing pandas, NumPy and openpyxl. The recorded development versions are in [environment baseline](docs/ENVIRONMENT_BASELINE.txt). No SQL server or package download is needed when that environment is already available.
-
-### Data pipeline
-
-The raw workbook and canonical CSVs are included, so rebuilding is optional. These commands inventory the workbook, **overwrite canonical outputs**, and generate EDA evidence respectively:
+Install the recorded Python dependencies:
 
 ```powershell
-python src/discovery/01_workbook_inventory.py
-python src/transformation/02_build_canonical_dataset.py
-python src/analysis/04_run_eda.py
+python -m pip install -r requirements.txt
 ```
 
-The source is hash-pinned. A newer CMS download may intentionally fail the source-integrity gate; do not silently change the expected hash. Review workbooks go to ignored `.local-review/`, or to `TRANSPARENCY_PUF_REVIEW_DIR` when explicitly configured.
+The committed canonical CSVs are already available, so rebuilding is optional.
 
-### Validation
-
-These checks read canonical data and Power BI source; they only write review evidence or Python bytecode:
+### Safe read-only validation entry points
 
 ```powershell
 python src/validation/03_validate_kpis.py
@@ -153,30 +185,56 @@ python src/validation/11_audit_powerbi_report_structure.py
 python src/validation/release_audit.py
 ```
 
-Optional live check: `python src/validation/09_runtime_dax_reconciliation.py` requires an already installed DAX Studio CLI and this PBIP open in Power BI Desktop. The fresh successful run is recorded in [validation evidence](docs/VALIDATION_EVIDENCE.md); its local review workbook remains ignored. Do not run the historical model installers, report builders or patch scripts as a reproduction sequence.
+`src/validation/` also contains historical builders and patch scripts retained for engineering provenance. **Do not batch-run the directory.** Safe versus mutating scripts are classified in [`src/validation/README.md`](src/validation/README.md) and the [repository inventory](docs/REPOSITORY_INVENTORY.md).
+
+### Optional canonical rebuild
+
+These commands perform source discovery, overwrite canonical outputs and generate EDA evidence respectively:
+
+```powershell
+python src/discovery/01_workbook_inventory.py
+python src/transformation/02_build_canonical_dataset.py
+python src/analysis/04_run_eda.py
+```
+
+The raw workbook is hash-pinned. A newer upstream CMS workbook should be handled as a separately reviewed source update rather than bypassing the integrity gate.
 
 ### Power BI
 
-Open [TransparencyInCoverage.pbip](powerbi/TransparencyInCoverage.pbip) in Power BI Desktop with PBIP support. Set the existing **DataFolderPath** Power Query parameter to the absolute path of your clone's `data/canonical` folder, then refresh. The original saved parameter was preserved; it is the one expected local setup step on another machine. Local import caches are intentionally excluded, so a fresh clone needs refresh before displaying data.
+Open [`powerbi/TransparencyInCoverage.pbip`](powerbi/TransparencyInCoverage.pbip) in Power BI Desktop with PBIP support. Set the existing `DataFolderPath` Power Query parameter to the absolute path of the clone's `data/canonical` directory, then refresh. Local Power BI cache/state is intentionally excluded from source control.
+
+## Repository structure
+
+```text
+transparency-in-coverage-puf/
+├── .github/workflows/       # static CI quality gate
+├── data/                    # raw CMS source + 11 governed canonical CSVs
+├── docs/                    # contracts, architecture, governance and validation
+├── powerbi/                 # PBIP, PBIR report and TMDL semantic model
+├── screenshots/             # 11 final report-page images
+├── src/
+│   ├── discovery/
+│   ├── transformation/
+│   ├── analysis/
+│   └── validation/          # safe audits + retained historical engineering
+├── requirements.txt
+├── PROJECT_INDEX.md
+└── README.md
+```
 
 ## Technology stack
 
-Python, pandas, NumPy, openpyxl, Power BI, DAX, Power Query, PBIP, TMDL, PBIR, Git and GitHub. DAX Studio supports the optional runtime reconciliation.
+Python 3.13 · pandas · NumPy · openpyxl · Power BI · DAX · Power Query · PBIP · PBIR · TMDL · DAX Studio · Git · GitHub Actions
 
-## Key engineering decisions
+SQL Server is intentionally not part of the current serving architecture; the governed canonical dataset is small and already materialized, so adding SQL would introduce another layer without a present analytical or operational need.
 
-- Grain-first design avoids duplicated issuer totals across plan rows.
-- Governed availability facts separate disclosure meaning from numeric values.
-- Canonical CSV import provides a small, inspectable serving layer.
-- Single-direction relationships constrain filter propagation.
-- The disconnected DQ register supports explicit entity-context measures.
-- Saved report definitions preserve manual layout work beyond historical builders.
+## Important limitations
 
-## Limitations
+CMS transparency data are self-reported and may be revised. Availability varies by metric and entity. Results apply to the published dataset and governed comparable populations, not automatically to the entire market. Denial reasons are not assumed to be exhaustive, resubmission intensity is not a probability, and monthly enrollment relationships are not annual churn.
 
-The source is self-reported and may be revised by CMS. Availability varies by metric and entity; published anomalies remain preserved. Results apply to the dataset and governed comparable populations, not the whole market. Enrollment ratios are not annual churn. See [known limitations and public-release review](docs/KNOWN_LIMITATIONS.md).
+See [known limitations](docs/KNOWN_LIMITATIONS.md) and [data provenance policy](data/README.md).
 
-No software LICENSE has been added because a project licensing choice has not been established. Source-data terms and attribution are documented separately in [data policy](data/README.md).
+No software `LICENSE` has been added because a software licensing choice has not been established.
 
 ## Author
 
